@@ -4,8 +4,10 @@
     --bg-secondary: #121212;
     --text-primary: #ffffff;
     --text-secondary: #a0a0a0;
-    --accent-primary: #6366f1; /* Indigo */
-    --accent-secondary: #8b5cf6; /* Violet */
+    --accent-primary: #6366f1;
+    /* Indigo */
+    --accent-secondary: #8b5cf6;
+    /* Violet */
     --accent-glow: rgba(99, 102, 241, 0.5);
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
@@ -31,7 +33,12 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-heading);
     font-weight: 700;
     line-height: 1.2;
@@ -274,9 +281,17 @@ section {
     border-radius: 50%;
 }
 
-.dot.red { background-color: #ff5f56; }
-.dot.yellow { background-color: #ffbd2e; }
-.dot.green { background-color: #27c93f; }
+.dot.red {
+    background-color: #ff5f56;
+}
+
+.dot.yellow {
+    background-color: #ffbd2e;
+}
+
+.dot.green {
+    background-color: #27c93f;
+}
 
 .code-content pre {
     font-family: 'Fira Code', monospace;
@@ -284,11 +299,25 @@ section {
     color: #e0e0e0;
 }
 
-.keyword { color: #ff79c6; }
-.variable { color: #8be9fd; }
-.string { color: #f1fa8c; }
-.property { color: #bd93f9; }
-.function { color: #50fa7b; }
+.keyword {
+    color: #ff79c6;
+}
+
+.variable {
+    color: #8be9fd;
+}
+
+.string {
+    color: #f1fa8c;
+}
+
+.property {
+    color: #bd93f9;
+}
+
+.function {
+    color: #50fa7b;
+}
 
 /* About Section */
 .about-grid {
@@ -376,13 +405,15 @@ section {
 /* Projects Section */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 400px));
     gap: 40px;
+    justify-content: center;
 }
 
 .project-card {
     background: var(--bg-secondary);
-    border-radius: 16px;
+    background: var(--bg-secondary);
+    border-radius: 0;
     overflow: hidden;
     border: 1px solid var(--glass-border);
     transition: var(--transition-fast);
@@ -394,7 +425,8 @@ section {
 }
 
 .project-image {
-    height: 200px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
     position: relative;
     overflow: hidden;
 }
@@ -444,6 +476,16 @@ section {
     margin-bottom: 10px;
 }
 
+.project-link {
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: var(--transition-fast);
+}
+
+.project-link:hover {
+    color: var(--accent-primary);
+}
+
 .project-info p {
     color: var(--text-secondary);
     margin-bottom: 20px;
@@ -479,7 +521,8 @@ section {
     gap: 20px;
 }
 
-.form-group input, .form-group textarea {
+.form-group input,
+.form-group textarea {
     width: 100%;
     padding: 15px;
     background: var(--bg-secondary);
@@ -491,7 +534,8 @@ section {
     transition: var(--transition-fast);
 }
 
-.form-group input:focus, .form-group textarea:focus {
+.form-group input:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: var(--accent-primary);
     box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
@@ -534,9 +578,17 @@ footer {
     animation: fadeInUp 0.8s ease forwards;
 }
 
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
+.delay-100 {
+    animation-delay: 0.1s;
+}
+
+.delay-200 {
+    animation-delay: 0.2s;
+}
+
+.delay-300 {
+    animation-delay: 0.3s;
+}
 
 @keyframes fadeInUp {
     to {
@@ -617,7 +669,7 @@ footer {
     .cta-buttons {
         justify-content: center;
     }
-    
+
     .about-grid {
         grid-template-columns: 1fr;
     }
