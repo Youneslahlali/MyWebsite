@@ -51,6 +51,7 @@
             background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .suite-header p {
@@ -161,6 +162,7 @@
             border-radius: 6px;
             cursor: pointer;
             background: none;
+            appearance: none;
         }
 
         input[type="color"]::-webkit-color-swatch-wrapper {
@@ -184,6 +186,7 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 3px;
             -webkit-appearance: none;
+            appearance: none;
         }
 
         input[type="range"]::-webkit-slider-thumb {
@@ -194,6 +197,7 @@
             border-radius: 50%;
             cursor: pointer;
             transition: transform 0.2s;
+            appearance: none;
         }
 
         input[type="range"]::-webkit-slider-thumb:hover {
@@ -331,11 +335,17 @@
 
         <!-- Mode Switcher -->
         <div class="mode-tabs fade-in-up delay-100">
-            <button class="tab-btn active" onclick="setMode('qr')">
+            <button class="tab-btn" onclick="setMode('qr')">
                 <i class="fas fa-qrcode"></i> QR Code
             </button>
-            <button class="tab-btn" onclick="setMode('barcode')">
+            <button class="tab-btn active" onclick="setMode('barcode')">
                 <i class="fas fa-barcode"></i> Barcode
+            </button>
+            <button class="tab-btn" onclick="setMode('bulk')">
+                <i class="fas fa-file-pdf"></i> Bulk PDF
+            </button>
+            <button class="tab-btn" onclick="setMode('scan')">
+                <i class="fas fa-camera"></i> Scanner
             </button>
         </div>
 
@@ -343,12 +353,15 @@
             <!-- Configuration Panel -->
             <aside class="config-panel">
                 <div class="panel-section">
-                    <label>Content Data</label>
-                    <input type="text" id="contentInput" class="control-input" placeholder="https://example.com"
-                        value="https://youneslahlali.com">
+                    <label id="contentLabel">Content Data</label>
+                    <input type="text" id="contentInput" class="control-input" placeholder="Type your text here..."
+                        value="1234567890">
+                    <textarea id="bulkInput" class="control-input"
+                        style="display:none; height: 150px; resize: vertical;"
+                        placeholder="Enter one code per line..."></textarea>
                 </div>
 
-                <div class="panel-section" id="qrSettings">
+                <div class="panel-section" id="qrSettings" style="display: none;">
                     <label>Error Correction</label>
                     <select id="eccSelect" class="control-input">
                         <option value="L">Low (7%)</option>
@@ -356,6 +369,31 @@
                         <option value="Q">Quartile (25%)</option>
                         <option value="H">High (30%)</option>
                     </select>
+                </div>
+
+                <div class="panel-section" id="bulkSettings" style="display: none;">
+                    <label>Bulk Options</label>
+                    <div style="margin-bottom: 10px;">
+                        <input type="checkbox" id="showText" checked> <span
+                            style="color: var(--text-secondary); font-size: 0.9rem;">Show Text Below</span>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="showPageNum"> <span
+                            style="color: var(--text-secondary); font-size: 0.9rem;">Page Numbers</span>
+                    </div>
+                </div>
+
+                <div class="panel-section" id="scanSettings" style="display: none;">
+                    <label>Scanner Result</label>
+                    <div id="scanResult"
+                        style="padding: 10px; background: rgba(255,255,255,0.05); color: #fff; border-radius: 8px; font-family: monospace; min-height: 40px; word-break: break-all;">
+                        Scanning...
+                    </div>
+                    <button id="copyScanBtn" class="btn full-width"
+                        style="margin-top: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--gen-border); color: white; display: none;"
+                        onclick="copyScanResult()">
+                        <i class="far fa-copy"></i> Copy Result
+                    </button>
                 </div>
 
                 <div class="panel-section">
@@ -378,7 +416,7 @@
                     </div>
                 </div>
 
-                <button class="btn primary full-width" onclick="generate()">
+                <button id="genBtn" class="btn primary full-width" onclick="generate()">
                     <i class="fas fa-magic"></i> Generate Code
                 </button>
             </aside>
@@ -393,7 +431,7 @@
 
                 <div class="preview-label">Live Preview</div>
 
-                <div class="actions-bar">
+                <div class="actions-bar" id="actionBtns">
                     <button class="action-btn" onclick="copyToClipboard()">
                         <i class="far fa-copy"></i> Copy
                     </button>
@@ -408,34 +446,48 @@
     <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <script>
         // State
-        let currentMode = 'qr'; // 'qr' or 'barcode'
+        let currentMode = 'barcode'; // Default is barcode
 
         // DOM Elements
         const contentInput = document.getElementById('contentInput');
+        const bulkInput = document.getElementById('bulkInput');
         const sizeSlider = document.getElementById('sizeSlider');
         const sizeVal = document.getElementById('sizeVal');
         const fgColor = document.getElementById('fgColor');
         const bgColor = document.getElementById('bgColor');
         const eccSelect = document.getElementById('eccSelect');
         const previewStage = document.getElementById('previewStage');
-        const qrSettings = document.getElementById('qrSettings'); // To hide/show specific settings
+        const qrSettings = document.getElementById('qrSettings');
+        const bulkSettings = document.getElementById('bulkSettings');
+        const scanSettings = document.getElementById('scanSettings');
+        const actionBtns = document.getElementById('actionBtns');
+        const genBtn = document.getElementById('genBtn');
+        const showText = document.getElementById('showText');
+        const showPageNum = document.getElementById('showPageNum');
+        const scanResult = document.getElementById('scanResult');
+        const copyScanBtn = document.getElementById('copyScanBtn');
+
+        let html5QrCode;
 
         // Initialize
         window.addEventListener('load', () => {
-            generate();
+            setMode('barcode'); // Ensure UI matches state
         });
 
         // Event Listeners
         contentInput.addEventListener('input', generate);
+        bulkInput.addEventListener('input', () => { /* No auto-gen for bulk to save resources */ });
         sizeSlider.addEventListener('input', (e) => {
             sizeVal.textContent = e.target.value + 'px';
-            generate();
+            if (currentMode !== 'bulk') generate();
         });
-        fgColor.addEventListener('input', generate);
-        bgColor.addEventListener('input', generate);
+        fgColor.addEventListener('input', () => { if (currentMode !== 'bulk') generate(); });
+        bgColor.addEventListener('input', () => { if (currentMode !== 'bulk') generate(); });
         eccSelect.addEventListener('change', generate);
 
         function setMode(mode) {
@@ -443,21 +495,99 @@
 
             // Update Tabs
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            // Find the button that called this, or default to the one matching the mode
+            const btns = document.querySelectorAll('.tab-btn');
+            if (mode === 'qr') btns[0].classList.add('active');
+            else if (mode === 'barcode') btns[1].classList.add('active');
+            else if (mode === 'bulk') btns[2].classList.add('active');
+            else if (mode === 'scan') btns[3].classList.add('active');
 
-            // Update UI specific to mode
+            // Reset UI
+            qrSettings.style.display = 'none';
+            bulkSettings.style.display = 'none';
+            scanSettings.style.display = 'none';
+            contentInput.style.display = 'block';
+            contentInput.parentElement.style.display = 'block'; // Ensure label is handled too if blocked
+            bulkInput.style.display = 'none';
+            actionBtns.style.display = 'flex';
+
+            // Stop scanner if running
+            if (html5QrCode && (html5QrCode.isScanning || html5QrCode.getState() === 2)) {
+                html5QrCode.stop().then(() => {
+                    html5QrCode.clear();
+                }).catch(err => {
+                    console.error("Failed to stop scanning", err);
+                });
+            }
+
+            // Configure Mode
             if (mode === 'qr') {
                 qrSettings.style.display = 'block';
                 contentInput.placeholder = "https://example.com";
-            } else {
-                qrSettings.style.display = 'none';
-                contentInput.placeholder = "123456789012";
-                if (contentInput.value.startsWith('http')) contentInput.value = '123456789012';
+                contentInput.value = "";
+                genBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Code';
+                genBtn.style.display = 'block';
+                generate();
+            } else if (mode === 'barcode') {
+                contentInput.placeholder = "Type your text here...";
+                contentInput.value = "1234567890";
+                genBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Code';
+                genBtn.style.display = 'block';
+                generate();
+            } else if (mode === 'bulk') {
+                bulkSettings.style.display = 'block';
+                contentInput.style.display = 'none';
+                bulkInput.style.display = 'block';
+                actionBtns.style.display = 'none'; // Hide single download buttons
+                genBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Generate PDF';
+                genBtn.style.display = 'block';
+                previewStage.innerHTML = '<div style="text-align:center; color: #666;"><i class="fas fa-layer-group" style="font-size: 3rem; margin-bottom: 20px;"></i><br>Enter codes and click Generate PDF</div>';
+            } else if (mode === 'scan') {
+                scanSettings.style.display = 'block';
+                contentInput.parentElement.style.display = 'none'; // Hide input area
+                genBtn.style.display = 'none'; // Hide generate button
+                actionBtns.style.display = 'none';
+
+                previewStage.innerHTML = '<div id="reader" style="width: 100%;"></div>';
+
+                startScanner();
             }
-            generate();
         }
 
-        function generate() {
+        function startScanner() {
+            html5QrCode = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess)
+                .catch(err => {
+                    previewStage.innerHTML = `<div style="color:red; text-align:center;">Error starting camera: ${err}</div>`;
+                });
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            // handle the scanned code as you like, for example:
+            console.log(`Code matched = ${decodedText}`, decodedResult);
+            scanResult.innerText = decodedText;
+            scanResult.style.color = '#4ade80'; // Green text
+            scanResult.style.borderColor = '#4ade80';
+            copyScanBtn.style.display = 'block';
+        }
+
+        function copyScanResult() {
+            navigator.clipboard.writeText(scanResult.innerText).then(() => {
+                const btn = document.getElementById('copyScanBtn');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => btn.innerHTML = original, 2000);
+            });
+        }
+
+        async function generate() {
+            if (currentMode === 'bulk') {
+                generateBulkPDF();
+                return;
+            }
+
             const content = contentInput.value || (currentMode === 'qr' ? 'https://example.com' : '1234567890');
             const size = parseInt(sizeSlider.value);
             const fg = fgColor.value;
@@ -465,12 +595,9 @@
 
             // Clear previous
             previewStage.innerHTML = '';
-
-            // Update Stage Background
-            previewStage.style.backgroundColor = bg; // For visual consistency
+            previewStage.style.backgroundColor = bg;
 
             if (currentMode === 'qr') {
-                // QR Code
                 const qrDiv = document.createElement('div');
                 new QRCode(qrDiv, {
                     text: content,
@@ -481,10 +608,7 @@
                     correctLevel: QRCode.CorrectLevel[eccSelect.value]
                 });
                 previewStage.appendChild(qrDiv);
-
-                // Fix for qrcodejs padding/margin if needed, usually it's canvas or img
             } else {
-                // Barcode
                 const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                 svg.id = "barcode";
                 previewStage.appendChild(svg);
@@ -495,13 +619,71 @@
                         lineColor: fg,
                         background: bg,
                         width: 2,
-                        height: size / 2, // Barcode height relative to size slider
+                        height: size / 2,
                         displayValue: true
                     });
                 } catch (e) {
                     previewStage.innerHTML = '<span style="color:red">Invalid Barcode Data</span>';
                 }
             }
+        }
+
+        function generateBulkPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const lines = bulkInput.value.split('\n').filter(line => line.trim() !== '');
+            const fg = fgColor.value;
+
+            if (lines.length === 0) {
+                alert("Please enter some codes first!");
+                return;
+            }
+
+            lines.forEach((code, index) => {
+                if (index > 0) doc.addPage();
+
+                // Create a temporary canvas to generate barcode image
+                const canvas = document.createElement('canvas');
+
+                // JsBarcode works synchronously if there is no image format or callback, but we need rendering
+                // To safely get image data, we use an element.
+                try {
+                    JsBarcode(canvas, code.trim(), {
+                        format: "CODE128",
+                        lineColor: fg,
+                        width: 2,
+                        height: 100,
+                        displayValue: showText.checked,
+                        margin: 10
+                    });
+
+                    const imgData = canvas.toDataURL("image/jpeg");
+
+                    // Add to PDF
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const pageHeight = doc.internal.pageSize.getHeight();
+
+                    // Center image
+                    const imgWidth = 100; // Fixed width for PDF
+                    const imgHeight = 50;
+                    const x = (pageWidth - imgWidth) / 2;
+                    const y = (pageHeight - imgHeight) / 2;
+
+                    doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
+
+                    // Add Page Number
+                    if (showPageNum.checked) {
+                        doc.setFontSize(10);
+                        doc.text(`Page ${index + 1}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+                    }
+
+                } catch (e) {
+                    console.error("Error generating barcode for " + code, e);
+                    doc.text("Error generating barcode", 10, 10);
+                }
+            });
+
+            doc.save("bulk-barcodes.pdf");
         }
 
         function downloadImage() {
@@ -512,29 +694,20 @@
             let url;
 
             if (currentMode === 'qr') {
-                // QRCode.js uses canvas usually, sometimes img
                 if (canvas) {
                     url = canvas.toDataURL("image/png");
                 } else if (img) {
                     url = img.src;
                 }
             } else {
-                // For SVG barcode, we need to convert to canvas to download as PNG, or download SVG
-                // Let's download SVG for barcode simplicity or convert. 
-                // For "Download PNG" requested, let's try to convert SVG to Canvas.
                 const svgData = new XMLSerializer().serializeToString(svg);
                 const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
                 url = URL.createObjectURL(blob);
-
-                // If user really wants PNG from SVG, it requires an image load. 
-                // For now, let's just trigger download of what we have.
-                // Actually common user expectation is PNG.
             }
 
-            // Trigger Download
             if (url) {
                 const link = document.createElement('a');
-                link.download = `code-generator-${Date.now()}.png`; // or .svg depending
+                link.download = `code-generator-${Date.now()}.png`;
                 link.href = url;
                 document.body.appendChild(link);
                 link.click();
@@ -542,7 +715,6 @@
             }
         }
 
-        // Simple clipboard copy text for now, image copy is complex across browsers
         function copyToClipboard() {
             navigator.clipboard.writeText(contentInput.value).then(() => {
                 const btn = document.querySelector('.action-btn');
