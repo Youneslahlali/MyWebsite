@@ -32,4 +32,3 @@ A modern, responsive, and aesthetically pleasing developer portfolio built with 
 -   **Fonts**: Swap the Google Fonts link in `index.html` and update the font variables in `styles.css`.
 
 Enjoy your new portfolio!
-s
