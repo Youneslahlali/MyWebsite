@@ -37,6 +37,9 @@
   ],
   "exclude": [
     "node_modules",
-    "old-version-archive"
+    "old-version-archive",
+    "v2",
+    "version2",
+    "projects"
   ]
 }
