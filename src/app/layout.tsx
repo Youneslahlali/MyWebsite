@@ -31,11 +31,19 @@ export default function RootLayout({
     return (
         <html lang="en" className="scroll-smooth">
             <body
-                className={`${outfit.variable} ${firaCode.variable} font-sans antialiased bg-zinc-950 text-zinc-100`}
+                className={`${outfit.variable} ${firaCode.variable} font-sans antialiased bg-zinc-950 text-zinc-100 noise-overlay`}
             >
+                {/* Liquid Glass Background */}
+                <div className="liquid-bg">
+                    <div className="liquid-orb liquid-orb-1" />
+                    <div className="liquid-orb liquid-orb-2" />
+                    <div className="liquid-orb liquid-orb-3" />
+                    <div className="liquid-orb liquid-orb-4" />
+                </div>
+
                 <ScrollToTop />
                 <Navbar />
-                {children}
+                <main className="relative z-10">{children}</main>
                 <Footer />
             </body>
         </html>

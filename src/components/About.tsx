@@ -35,7 +35,7 @@ export function About() {
                         {stats.map((stat) => (
                             <div
                                 key={stat.label}
-                                className="glass rounded-2xl p-6 text-center hover:border-indigo-500/30 hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300 hover:-translate-y-1"
+                                className="glass glass-hover rounded-2xl p-6 text-center hover:border-indigo-500/30 hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300 hover:-translate-y-1"
                             >
                                 <stat.icon className="w-6 h-6 text-indigo-400 mx-auto mb-3" />
                                 <div className="text-3xl font-bold text-white mb-1">

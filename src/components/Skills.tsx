@@ -48,7 +48,7 @@ export function Skills() {
                         return (
                             <div
                                 key={cat.title}
-                                className={`glass rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 ${colors.border}`}
+                                className={`glass glass-hover rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 ${colors.border}`}
                             >
                                 <h3 className="text-xl font-bold text-white mb-6">
                                     {cat.title}

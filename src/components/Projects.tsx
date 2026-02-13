@@ -51,7 +51,7 @@ export function Projects() {
                         return (
                             <div
                                 key={project.title}
-                                className={`group relative bg-zinc-900 border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 ${colors.hoverBorder} hover:-translate-y-1`}
+                                className={`group relative glass glass-hover rounded-2xl overflow-hidden transition-all duration-300 ${colors.hoverBorder} hover:-translate-y-1`}
                             >
 
 
