@@ -27,7 +27,7 @@ type QRInputType = "text" | "url" | "email" | "phone" | "sms" | "wifi" | "vcard"
 const modes = [
     { id: "qr" as Mode, label: "QR Code", icon: QrCode },
     { id: "barcode" as Mode, label: "Barcode", icon: Barcode },
-    { id: "bulk" as Mode, label: "Bulk PDF", icon: FileText },
+    { id: "bulk" as Mode, label: "Bulk Barcodes", icon: FileText },
     { id: "scan" as Mode, label: "Scanner", icon: Camera },
 ];
 
@@ -242,7 +242,7 @@ export default function GeneratorPage() {
         URL.revokeObjectURL(url);
     };
 
-    // Bulk PDF
+    // Bulk Barcodes
     const generateBulkPDF = async () => {
         const lines = bulkInput.split("\n").filter((l) => l.trim());
         if (!lines.length) return alert("Please enter some codes first!");
@@ -317,8 +317,8 @@ export default function GeneratorPage() {
                                     if (m.id === "barcode") setContent("1234567890");
                                 }}
                                 className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-lg text-sm font-semibold transition-all ${mode === m.id
-                                        ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
-                                        : "text-zinc-400 hover:text-white hover:bg-white/5"
+                                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
+                                    : "text-zinc-400 hover:text-white hover:bg-white/5"
                                     }`}
                             >
                                 <m.icon size={16} />
@@ -342,8 +342,8 @@ export default function GeneratorPage() {
                                             key={t.id}
                                             onClick={() => { setInputType(t.id); setContent(""); }}
                                             className={`flex flex-col items-center gap-1 p-2.5 rounded-lg text-xs font-medium transition-all ${inputType === t.id
-                                                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
-                                                    : "bg-white/3 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/5"
+                                                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
+                                                : "bg-white/3 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/5"
                                                 }`}
                                         >
                                             <t.icon size={16} />

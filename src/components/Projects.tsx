@@ -1,26 +1,15 @@
-import { ExternalLink, QrCode } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
 const projects = [
     {
         title: "Code Generator Suite",
         description:
-            "A professional tool to generate high-quality QR codes, barcodes, and bulk PDFs. Features live preview, multiple formats, and camera scanning.",
+            "A professional tool to generate high-quality QR codes, barcodes, and bulk barcodes. Features live preview, multiple formats, and camera scanning.",
         tech: ["Next.js", "TypeScript", "Tailwind"],
         color: "indigo",
-        emoji: "🏁",
         link: "/generator",
         isInternal: true,
-    },
-    {
-        title: "Design System",
-        description:
-            "Complete UI kit with atomic components, documentation, and accessible patterns for rapid development.",
-        tech: ["Figma", "Storybook", "TypeScript"],
-        color: "pink",
-        emoji: "🎨",
-        link: "#",
-        isInternal: false,
     },
 ];
 
@@ -64,13 +53,7 @@ export function Projects() {
                                 key={project.title}
                                 className={`group relative bg-zinc-900 border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 ${colors.hoverBorder} hover:-translate-y-1`}
                             >
-                                <div
-                                    className={`aspect-video ${colors.bg} ${colors.hoverBg} flex items-center justify-center p-8 transition-colors`}
-                                >
-                                    <div className="w-16 h-16 rounded-xl bg-white/5 flex items-center justify-center text-3xl">
-                                        {project.emoji}
-                                    </div>
-                                </div>
+
 
                                 <div className="p-6 space-y-4">
                                     <div className="flex justify-between items-start">
