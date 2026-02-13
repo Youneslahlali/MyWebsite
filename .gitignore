@@ -9,5 +9,8 @@ out/
 *.tsbuildinfo
 next-env.d.ts
 
-# old archive (optional - remove this line if you want to keep it in the repo)
+# archived files
 old-version-archive/
+v2/
+version2/
+projects/
