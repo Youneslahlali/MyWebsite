@@ -358,8 +358,8 @@ section {
     max-width: 400px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
-    transition: transform 0.1s ease, background 0.5s ease, border-color 0.5s ease;
-    /* Faster transition for smooth tilt */
+    transition: background 0.5s ease, border-color 0.5s ease;
+    /* Transition handled by JS for tilt */
 }
 
 [data-theme="light"] .code-cardglass {
