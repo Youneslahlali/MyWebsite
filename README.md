@@ -1,34 +1,73 @@
-# Younes Lahlali Developer Portfolio
+# ⚡ Younes Lahlali | Developer Portfolio
 
-A modern, responsive, and aesthetically pleasing developer portfolio built with HTML, CSS, and Vanilla JavaScript.
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=flat&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=flat&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=flat&logo=javascript&logoColor=%23F7DF1E)
 
-## 🚀 Features
+Welcome to my personal developer portfolio! This repository houses the source code for my personal website, designed to showcase my skills, experience, and the projects I've built. It features a modern, dark-themed UI with glassmorphism effects and smooth interactions.
 
--   **Modern Dark UI**: Sleek dark mode design with glassmorphism effects.
--   **Responsive**: Fully responsive layout that looks great on all devices.
--   **Interactive**: Smooth scroll animations, hover effects, and custom cursor glow.
--   **Performance Focused**: Lightweight code with no heavy external frameworks.
--   **SEO Optimized**: Semantic HTML structure and meta tags for better search visibility.
+## 🌟 Overview
 
-## 🛠 Tech Stack
+This portfolio is built with a focus on performance, aesthetics, and user experience. It uses **Vanilla JavaScript** and **CSS3** variables to deliver a lightweight yet visually stunning experience without the bloat of heavy frameworks.
 
--   **HTML5**
--   **CSS3** (Custom Properties, Flexbox, Grid)
--   **JavaScript** (ES6+)
+### Key Features
+-   **🎨 Modern Dark UI**: Sleek, high-contrast dark mode design with glassmorphism elements.
+-   **📱 Fully Responsive**: Optimized for all devices, from mobile phones to 4K desktops.
+-   **✨ Interactive**: Smooth scroll animations, hover effects, and a custom cursor experience.
+-   **⚡ Performance First**: Zero external framework dependencies for maximum speed.
+-   **🔍 SEO Optimized**: Semantic HTML structure for better accessibility and search visibility.
 
-## 📦 How to Use
+---
 
-1.  **Open the Portfolio**: Simply open `index.html` in your web browser.
-    -   Double-click `index.html`
-    -   Or right-click and select "Open with" -> Google Chrome / Firefox / Edge
+## 📂 Featured Projects
 
-2.  **Customize Content**:
-    -   Edit `index.html` to update your bio, skills, and project details.
-    -   Replace placeholder links with your actual social media profiles.
+Here are some of the interactive tools and applications hosted within this portfolio:
 
-## 🎨 Customization
+### 1. [Barcode & QR Code Generator](./projects/barcode-generator/index.html)
+A versatile and fast tool to generate custom Barcodes and QR codes instantly.
+-   **Tech**: JavaScript, QR.js, CSS3
+-   **Features**: Real-time generation, downloadable images, and multiple format support.
+-   **Location**: [`/projects/barcode-generator`](./projects/barcode-generator)
 
--   **Colors**: Change the color variables in `styles.css` under `:root` to switch themes.
--   **Fonts**: Swap the Google Fonts link in `index.html` and update the font variables in `styles.css`.
+*(More projects coming soon!)*
 
-Enjoy your new portfolio!
+---
+
+## 🛠️ Technology Stack
+
+-   **Frontend**: HTML5, CSS3 (Flexbox, Grid, Custom Properties), JavaScript (ES6+)
+-   **Design**: Figma (Prototyping), FontAwesome (Icons), Google Fonts (Typography)
+-   **Tools**: Git, VS Code
+
+---
+
+## � Getting Started
+
+To view this portfolio locally on your machine:
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/Youneslahlali/MyWebsite.git
+    ```
+2.  **Navigate to the project directory**
+    ```bash
+    cd MyWebsite
+    ```
+3.  **Open `index.html`**
+    -   Simply double-click `index.html` to open it in your default browser.
+    -   For the best experience, use a live server extension in VS Code.
+
+---
+
+## 📬 Contact Me
+
+Feel free to reach out if you have any questions or collaboration opportunities!
+
+-   **GitHub**: [Youneslahlali](https://github.com/Youneslahlali)
+-   **Email**: *[Insert your email here]*
+-   **LinkedIn**: *[Insert your LinkedIn profile link here]*
+
+---
+
+&copy; 2026 Younes Lahlali. All rights reserved.
