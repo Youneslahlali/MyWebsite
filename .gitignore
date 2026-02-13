@@ -1,0 +1,13 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# misc
+*.tsbuildinfo
+next-env.d.ts
+
+# old archive (optional - remove this line if you want to keep it in the repo)
+old-version-archive/
