@@ -104,3 +104,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// --- Contact Form Handling ---
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contact-form');
+    const successMessage = document.getElementById('success-message');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const btn = contactForm.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = 'Sending...';
+            btn.disabled = true;
+
+            const formData = new FormData(contactForm);
+
+            // Appends your email automatically using FormSubmit.co
+            // We use fetch to send data without leaving page
+            fetch("https://formsubmit.co/ajax/youneslh@proton.me", {
+                method: "POST",
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const name = formData.get('name') || "Friend";
+                    const senderNameElement = document.getElementById('sender-name');
+                    if (senderNameElement) senderNameElement.innerText = name;
+
+                    // Hide form, show success
+                    contactForm.style.display = 'none';
+                    if (successMessage) {
+                        successMessage.style.display = 'flex';
+                        // Optional: Scroll to success message
+                        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    btn.innerText = "Error! Try again.";
+                    btn.disabled = false;
+                    setTimeout(() => {
+                        btn.innerText = originalText;
+                    }, 3000);
+                });
+        });
+    }
+});
