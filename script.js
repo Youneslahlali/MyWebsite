@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Appends your email automatically using FormSubmit.co
             // We use fetch to send data without leaving page
-            fetch("https://formsubmit.co/ajax/youneslh@proton.me", {
+            fetch("https://formsubmit.co/ajax/youneslh1@proton.me", {
                 method: "POST",
                 body: formData
             })
