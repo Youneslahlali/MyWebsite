@@ -35,15 +35,8 @@ export function Contact() {
                     Get In <span className="text-indigo-400">Touch</span>
                 </h2>
                 <p className="text-zinc-400 mb-12 text-lg">
-                    Have a project in mind or want to say hi? Feel free to send me a
-                    message at{" "}
-                    <a
-                        href="mailto:youneslh1@proton.me"
-                        className="text-indigo-400 hover:text-indigo-300 transition-colors"
-                    >
-                        youneslh1@proton.me
-                    </a>
-                    !
+                    Have a project in mind or want to say hi? Fill out the form
+                    below and I&apos;ll get back to you as soon as possible.
                 </p>
 
                 {status === "sent" ? (
