@@ -137,7 +137,8 @@ section {
 /* Navbar */
 .navbar {
     position: fixed;
-    top: 0;
+    top: 50px;
+    /* Shifted down for notification bar */
     left: 0;
     width: 100%;
     padding: 20px 50px;
@@ -351,18 +352,17 @@ section {
 /* Code Card Visual & Interaction */
 .code-cardglass {
     width: 100%;
-    max-width: 400px;
-    height: 300px;
-    /* Fixed height for flip */
+    max-width: 500px;
+    /* Increased from 400px */
+    height: 350px;
+    /* Increased from 300px */
     perspective: 1000px;
-    /* Essential for 3D flip */
     transform-style: preserve-3d;
     cursor: pointer;
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;
     transform: perspective(1000px);
-    /* No initial tilt */
     transition: transform 0.1s ease;
     will-change: transform;
 }
@@ -549,11 +549,18 @@ section {
 
 .code-content pre {
     font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    /* Slightly smaller for better fit */
+    line-height: 1.6;
+    /* Better line spacing */
     color: #e0e0e0;
-    white-space: pre-wrap;
-    word-break: break-word;
-    overflow-x: hidden;
+    white-space: pre;
+    /* Use pre to respect indentation perfectly */
+    overflow-x: auto;
+    /* Allow scroll if needed, don't wrap weirdly */
+    padding: 10px 0;
+    text-align: left;
+    /* Ensure left alignment */
 }
 
 /* Syntax Highlighting */
