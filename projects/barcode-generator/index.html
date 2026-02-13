@@ -307,6 +307,44 @@
                 min-height: 400px;
             }
         }
+
+        /* Content Type Grid */
+        .content-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+        }
+
+        .type-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--gen-border);
+            border-radius: 8px;
+            padding: 10px 5px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+        }
+
+        .type-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .type-btn.active {
+            background: var(--gen-accent);
+            color: white;
+            border-color: var(--gen-accent);
+        }
+
+        .type-btn i {
+            font-size: 1.2rem;
+            margin-bottom: 2px;
+        }
     </style>
 </head>
 
@@ -348,12 +386,67 @@
             <!-- Configuration Panel -->
             <aside class="config-panel">
                 <div class="panel-section">
+                    <div id="contentTypeGrid" class="content-type-grid" style="display: none; margin-bottom: 20px;">
+                        <button class="type-btn active" onclick="setInputType('text')"><i class="fas fa-align-left"></i>
+                            Text</button>
+                        <button class="type-btn" onclick="setInputType('url')"><i class="fas fa-link"></i> URL</button>
+                        <button class="type-btn" onclick="setInputType('email')"><i class="fas fa-envelope"></i>
+                            Email</button>
+                        <button class="type-btn" onclick="setInputType('phone')"><i class="fas fa-phone"></i>
+                            Phone</button>
+                        <button class="type-btn" onclick="setInputType('sms')"><i class="fas fa-sms"></i> SMS</button>
+                        <button class="type-btn" onclick="setInputType('wifi')"><i class="fas fa-wifi"></i>
+                            WiFi</button>
+                        <button class="type-btn" onclick="setInputType('vcard')"><i class="fas fa-address-card"></i>
+                            Contact</button>
+                    </div>
+
+                    <!-- Specific Inputs -->
+                    <div id="wifiInputs" class="specific-inputs"
+                        style="display: none; flex-direction: column; gap: 10px;">
+                        <input type="text" id="wifiSSID" class="control-input" placeholder="Network Name (SSID)">
+                        <input type="text" id="wifiPass" class="control-input" placeholder="Password">
+                        <select id="wifiEnc" class="control-input">
+                            <option value="WPA">WPA/WPA2</option>
+                            <option value="WEP">WEP</option>
+                            <option value="nopass">No Encryption</option>
+                        </select>
+                    </div>
+
+                    <div id="smsInputs" class="specific-inputs"
+                        style="display: none; flex-direction: column; gap: 10px;">
+                        <input type="tel" id="smsPhone" class="control-input" placeholder="Phone Number">
+                        <textarea id="smsMessage" class="control-input" placeholder="Message" rows="3"></textarea>
+                    </div>
+
+                    <div id="vcardInputs" class="specific-inputs"
+                        style="display: none; flex-direction: column; gap: 10px;">
+                        <input type="text" id="vcardName" class="control-input" placeholder="Full Name">
+                        <input type="text" id="vcardOrg" class="control-input" placeholder="Organization">
+                        <input type="tel" id="vcardPhone" class="control-input" placeholder="Phone">
+                        <input type="email" id="vcardEmail" class="control-input" placeholder="Email">
+                        <input type="url" id="vcardSite" class="control-input" placeholder="Website">
+                    </div>
+
                     <label id="contentLabel">Content Data</label>
                     <input type="text" id="contentInput" class="control-input" placeholder="Type your text here..."
                         value="1234567890">
                     <textarea id="bulkInput" class="control-input"
                         style="display:none; height: 150px; resize: vertical;"
                         placeholder="Enter one code per line..."></textarea>
+
+                    <div id="barcodeFormatContainer" style="margin-top: 15px;">
+                        <label>Barcode Format</label>
+                        <select id="barcodeFormat" class="control-input">
+                            <option value="CODE128">Code 128 (Default)</option>
+                            <option value="CODE39">Code 39</option>
+                            <option value="EAN13">EAN-13</option>
+                            <option value="UPC">UPC</option>
+                            <option value="ITF14">ITF-14</option>
+                            <option value="MSI">MSI</option>
+                            <option value="pharmacode">Pharmacode</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="panel-section" id="qrSettings" style="display: none;">
@@ -364,10 +457,21 @@
                         <option value="Q">Quartile (25%)</option>
                         <option value="H">High (30%)</option>
                     </select>
+
+                    <label style="margin-top: 15px;">Logo (Optional)</label>
+                    <input type="file" id="logoInput" accept="image/*" class="control-input" style="padding: 10px;">
                 </div>
 
                 <div class="panel-section" id="bulkSettings" style="display: none;">
                     <label>Bulk Options</label>
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 0.85rem; margin-bottom: 5px; color: var(--text-secondary);">Code
+                            Type</label>
+                        <select id="bulkType" class="control-input">
+                            <option value="barcode">Barcode (Code 128)</option>
+                            <option value="qr">QR Code</option>
+                        </select>
+                    </div>
                     <div style="margin-bottom: 10px;">
                         <input type="checkbox" id="showText" checked> <span
                             style="color: var(--text-secondary); font-size: 0.9rem;">Show Text Below</span>
@@ -439,7 +543,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 Younes Lahlali. All rights reserved.</p>
+        <p>Made with ❤️ by Younes Lahlali.</p>
         <div class="social-links" style="margin-top: 15px; justify-content: center; gap: 20px;">
             <a href="https://github.com/Youneslahlali" target="_blank"><i class="fab fa-github"></i></a>
             <a href="https://www.linkedin.com/in/younes28l/" target="_blank"><i class="fab fa-linkedin"></i></a>
@@ -448,6 +552,7 @@
     </footer>
 
     <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -515,6 +620,8 @@
             contentInput.parentElement.style.display = 'block'; // Ensure label is handled too if blocked
             bulkInput.style.display = 'none';
             actionBtns.style.display = 'flex';
+            document.getElementById('barcodeFormatContainer').style.display = 'none';
+            document.getElementById('contentTypeGrid').style.display = 'none';
 
             // Stop scanner if running
             if (html5QrCode && (html5QrCode.isScanning || html5QrCode.getState() === 2)) {
@@ -528,12 +635,13 @@
             // Configure Mode
             if (mode === 'qr') {
                 qrSettings.style.display = 'block';
-                contentInput.placeholder = "https://example.com";
-                contentInput.value = "";
+                document.getElementById('contentTypeGrid').style.display = 'grid';
+                setInputType('text'); // Reset to text or keep current if enhanced
                 genBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Code';
                 genBtn.style.display = 'block';
                 generate();
             } else if (mode === 'barcode') {
+                document.getElementById('barcodeFormatContainer').style.display = 'block';
                 contentInput.placeholder = "Type your text here...";
                 contentInput.value = "1234567890";
                 genBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Code';
@@ -541,6 +649,7 @@
                 generate();
             } else if (mode === 'bulk') {
                 bulkSettings.style.display = 'block';
+                document.getElementById('barcodeFormatContainer').style.display = 'block';
                 contentInput.style.display = 'none';
                 bulkInput.style.display = 'block';
                 actionBtns.style.display = 'none'; // Hide single download buttons
@@ -587,13 +696,88 @@
             });
         }
 
+        // Specific Inputs
+        const wifiInputs = document.getElementById('wifiInputs');
+        const smsInputs = document.getElementById('smsInputs');
+        const vcardInputs = document.getElementById('vcardInputs');
+
+        function setInputType(type) {
+            currentInputType = type;
+            document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Reset Display
+            contentInput.style.display = 'block';
+            wifiInputs.style.display = 'none';
+            smsInputs.style.display = 'none';
+            vcardInputs.style.display = 'none';
+            contentInput.value = "";
+
+            // Placeholder & Visibility Logic
+            if (type === 'text') { contentInput.placeholder = "Enter text..."; }
+            if (type === 'url') { contentInput.placeholder = "https://example.com"; }
+            if (type === 'email') { contentInput.placeholder = "mailto:example@mail.com"; }
+            if (type === 'phone') { contentInput.placeholder = "tel:+1234567890"; }
+
+            if (type === 'wifi') {
+                contentInput.style.display = 'none';
+                wifiInputs.style.display = 'flex';
+            }
+            if (type === 'sms') {
+                contentInput.style.display = 'none';
+                smsInputs.style.display = 'flex';
+            }
+            if (type === 'vcard') {
+                contentInput.style.display = 'none';
+                vcardInputs.style.display = 'flex';
+            }
+
+            if (type !== 'wifi' && type !== 'sms' && type !== 'vcard') {
+                contentInput.focus();
+            }
+            generate();
+        }
+
         async function generate() {
             if (currentMode === 'bulk') {
                 generateBulkPDF();
                 return;
             }
+            if (currentMode === 'scan') return;
 
-            const content = contentInput.value || (currentMode === 'qr' ? 'https://example.com' : '1234567890');
+            // Determine Content based on Type
+            let content = "";
+
+            if (currentMode === 'qr') {
+                if (currentInputType === 'wifi') {
+                    const ssid = document.getElementById('wifiSSID').value;
+                    const pass = document.getElementById('wifiPass').value;
+                    const enc = document.getElementById('wifiEnc').value;
+                    content = `WIFI:T:${enc};S:${ssid};P:${pass};;`;
+                } else if (currentInputType === 'sms') {
+                    const phone = document.getElementById('smsPhone').value;
+                    const msg = document.getElementById('smsMessage').value;
+                    content = `SMSTO:${phone}:${msg}`;
+                } else if (currentInputType === 'vcard') {
+                    const name = document.getElementById('vcardName').value;
+                    const org = document.getElementById('vcardOrg').value;
+                    const phone = document.getElementById('vcardPhone').value;
+                    const email = document.getElementById('vcardEmail').value;
+                    const site = document.getElementById('vcardSite').value;
+                    content = `BEGIN:VCARD\nVERSION:3.0\nN:${name}\nORG:${org}\nTEL:${phone}\nEMAIL:${email}\nURL:${site}\nEND:VCARD`;
+                } else {
+                    content = contentInput.value;
+                    // Default fallbacks if empty to avoid broken visual
+                    if (!content) {
+                        if (currentInputType === 'url') content = "https://example.com";
+                        else if (currentInputType === 'email') content = "mailto:example@mail.com";
+                        else content = "1234567890";
+                    }
+                }
+            } else {
+                content = contentInput.value || "1234567890";
+            }
+
             const size = parseInt(sizeSlider.value);
             const fg = fgColor.value;
             const bg = bgColor.value;
@@ -603,6 +787,9 @@
             previewStage.style.backgroundColor = bg;
 
             if (currentMode === 'qr') {
+                const wrapper = document.createElement('div');
+                wrapper.style.position = 'relative';
+
                 const qrDiv = document.createElement('div');
                 new QRCode(qrDiv, {
                     text: content,
@@ -612,15 +799,42 @@
                     colorLight: bg,
                     correctLevel: QRCode.CorrectLevel[eccSelect.value]
                 });
-                previewStage.appendChild(qrDiv);
+                wrapper.appendChild(qrDiv);
+
+                // Handle Logo Overlay
+                const logoFile = document.getElementById('logoInput').files[0];
+                if (logoFile) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        const iconSize = size * 0.2; // 20% of QR size
+                        img.style.width = iconSize + 'px';
+                        img.style.height = iconSize + 'px';
+                        img.style.position = 'absolute';
+                        img.style.top = '50%';
+                        img.style.left = '50%';
+                        img.style.transform = 'translate(-50%, -50%)';
+                        img.style.backgroundColor = 'white';
+                        img.style.padding = '2px';
+                        img.style.borderRadius = '4px';
+                        wrapper.appendChild(img);
+                    }
+                    reader.readAsDataURL(logoFile);
+                }
+
+                previewStage.appendChild(wrapper);
+
             } else {
                 const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                 svg.id = "barcode";
                 previewStage.appendChild(svg);
 
+                const selectedFormat = document.getElementById('barcodeFormat').value;
+
                 try {
                     JsBarcode("#barcode", content, {
-                        format: "CODE128",
+                        format: selectedFormat,
                         lineColor: fg,
                         background: bg,
                         width: 2,
@@ -628,7 +842,10 @@
                         displayValue: true
                     });
                 } catch (e) {
-                    previewStage.innerHTML = '<span style="color:red">Invalid Barcode Data</span>';
+                    previewStage.innerHTML = `<div style="color:red; text-align:center;">
+                        <i class="fas fa-exclamation-triangle"></i><br>
+                        Invalid data for ${selectedFormat}
+                    </div>`;
                 }
             }
         }
@@ -638,6 +855,7 @@
             const doc = new jsPDF();
             const lines = bulkInput.value.split('\n').filter(line => line.trim() !== '');
             const fg = fgColor.value;
+            const format = document.getElementById('barcodeFormat').value;
 
             if (lines.length === 0) {
                 alert("Please enter some codes first!");
@@ -647,44 +865,32 @@
             lines.forEach((code, index) => {
                 if (index > 0) doc.addPage();
 
-                // Create a temporary canvas to generate barcode image
-                const canvas = document.createElement('canvas');
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
 
-                // JsBarcode works synchronously if there is no image format or callback, but we need rendering
-                // To safely get image data, we use an element.
+                const canvas = document.createElement('canvas');
                 try {
                     JsBarcode(canvas, code.trim(), {
-                        format: "CODE128",
+                        format: format,
                         lineColor: fg,
                         width: 2,
                         height: 100,
                         displayValue: showText.checked,
                         margin: 10
                     });
-
                     const imgData = canvas.toDataURL("image/jpeg");
-
-                    // Add to PDF
-                    const pageWidth = doc.internal.pageSize.getWidth();
-                    const pageHeight = doc.internal.pageSize.getHeight();
-
-                    // Center image
-                    const imgWidth = 100; // Fixed width for PDF
+                    const imgWidth = 100;
                     const imgHeight = 50;
                     const x = (pageWidth - imgWidth) / 2;
                     const y = (pageHeight - imgHeight) / 2;
-
                     doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
-
-                    // Add Page Number
-                    if (showPageNum.checked) {
-                        doc.setFontSize(10);
-                        doc.text(`Page ${index + 1}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
-                    }
-
                 } catch (e) {
-                    console.error("Error generating barcode for " + code, e);
-                    doc.text("Error generating barcode", 10, 10);
+                    doc.text("Error generating barcode: " + code, 10, 10);
+                }
+
+                if (showPageNum.checked) {
+                    doc.setFontSize(10);
+                    doc.text(`Page ${index + 1}`, pageWidth - 20, pageHeight - 10);
                 }
             });
 
@@ -692,31 +898,51 @@
         }
 
         function downloadImage() {
-            const img = previewStage.querySelector('img');
-            const canvas = previewStage.querySelector('canvas');
-            const svg = previewStage.querySelector('svg');
-
-            let url;
+            const stage = document.getElementById('previewStage');
 
             if (currentMode === 'qr') {
-                if (canvas) {
-                    url = canvas.toDataURL("image/png");
-                } else if (img) {
-                    url = img.src;
-                }
+                // Use html2canvas for QR to verify captures everything including logos
+                html2canvas(stage, {
+                    backgroundColor: null,
+                    scale: 2 // Improve quality
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `qrcode-${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
             } else {
-                const svgData = new XMLSerializer().serializeToString(svg);
-                const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-                url = URL.createObjectURL(blob);
-            }
+                // Barcode SVG to Canvas/Image
+                const svg = stage.querySelector('svg');
+                if (svg) {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const data = (new XMLSerializer()).serializeToString(svg);
+                    const DOMURL = window.URL || window.webkitURL || window;
 
-            if (url) {
-                const link = document.createElement('a');
-                link.download = `code-generator-${Date.now()}.png`;
-                link.href = url;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                    const img = new Image();
+                    const svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
+                    const url = DOMURL.createObjectURL(svgBlob);
+
+                    img.onload = function () {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.drawImage(img, 0, 0);
+                        DOMURL.revokeObjectURL(url);
+
+                        const imgURI = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+
+                        const link = document.createElement('a');
+                        link.download = `barcode-${Date.now()}.png`;
+                        link.href = imgURI;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    };
+                    img.src = url;
+                }
             }
         }
 
@@ -728,6 +954,18 @@
                 setTimeout(() => btn.innerHTML = original, 2000);
             });
         }
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add listeners for specific inputs
+            const specificInputs = document.querySelectorAll('#wifiInputs input, #wifiInputs select, #smsInputs input, #smsInputs textarea, #vcardInputs input');
+            specificInputs.forEach(input => {
+                input.addEventListener('input', generate);
+                input.addEventListener('change', generate);
+            });
+
+            setMode('qr');
+            setInputType('text');
+        });
     </script>
 </body>
 
