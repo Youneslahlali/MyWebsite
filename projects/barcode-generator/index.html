@@ -116,26 +116,33 @@
         .panel-section label {
             display: block;
             color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+            /* pro typography tweak */
         }
 
         .control-input {
             width: 100%;
-            padding: 12px 16px;
             background: rgba(0, 0, 0, 0.2);
             border: 1px solid var(--gen-border);
             border-radius: 8px;
+            padding: 12px 16px;
+            /* comfortable touch target */
             color: white;
-            font-family: var(--font-body);
-            transition: all 0.3s ease;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            /* smooth interaction */
         }
 
         .control-input:focus {
             outline: none;
             border-color: var(--gen-accent);
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            /* accessible focus ring */
         }
 
         .color-picker-wrapper {
@@ -312,38 +319,96 @@
         .content-type-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 10px;
+            gap: 12px;
         }
 
         .type-btn {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--gen-border);
-            border-radius: 8px;
-            padding: 10px 5px;
+            border-radius: 10px;
+            /* softer corners */
+            padding: 14px 5px;
             color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
-            font-size: 0.8rem;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .type-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             color: white;
+            transform: translateY(-2px);
+            /* subtle lift */
         }
 
         .type-btn.active {
             background: var(--gen-accent);
             color: white;
             border-color: var(--gen-accent);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            /* highlight active state */
         }
 
         .type-btn i {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             margin-bottom: 2px;
+        }
+
+        /* Download Group Styling */
+        .download-group {
+            display: flex;
+            align-items: stretch;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25);
+            /* emphasize primary action */
+            border-radius: 8px;
+            overflow: hidden;
+            /* clean corners */
+        }
+
+        .download-group .action-btn {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 0;
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        .format-select {
+            background: rgba(0, 0, 0, 0.2);
+            /* match input style */
+            color: white;
+            border: none;
+            /* removed border to make it look distinct yet integrated */
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            padding: 0 15px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s;
+            background-color: var(--gen-accent);
+            /* keep grouped visual */
+        }
+
+        .format-select:hover {
+            filter: brightness(1.1);
+        }
+
+        .format-select option {
+            background: #0f172a;
+            /* deeply dark navy for contrast */
+            color: white;
+            padding: 8px;
         }
     </style>
 </head>
@@ -534,9 +599,17 @@
                     <button class="action-btn" onclick="copyToClipboard()">
                         <i class="far fa-copy"></i> Copy
                     </button>
-                    <button class="action-btn primary" onclick="downloadImage()">
-                        <i class="fas fa-download"></i> Download PNG
-                    </button>
+
+                    <div class="download-group">
+                        <button class="action-btn primary" onclick="downloadImage()">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                        <select id="downloadFormat" class="format-select">
+                            <option value="png">PNG</option>
+                            <option value="jpg">JPG</option>
+                            <option value="svg">SVG</option>
+                        </select>
+                    </div>
                 </div>
             </main>
         </div>
@@ -899,16 +972,23 @@
 
         function downloadImage() {
             const stage = document.getElementById('previewStage');
+            const format = document.getElementById('downloadFormat').value;
 
             if (currentMode === 'qr') {
+                if (format === 'svg') {
+                    alert("SVG download is not supported for QR codes with custom styling yet. Downloading as PNG.");
+                }
+
                 // Use html2canvas for QR to verify captures everything including logos
                 html2canvas(stage, {
                     backgroundColor: null,
                     scale: 2 // Improve quality
                 }).then(canvas => {
                     const link = document.createElement('a');
-                    link.download = `qrcode-${Date.now()}.png`;
-                    link.href = canvas.toDataURL('image/png');
+                    // Use jpeg if selected, otherwise defaults to png (even if svg selected as fallback)
+                    const ext = format === 'jpg' ? 'jpeg' : 'png';
+                    link.download = `qrcode-${Date.now()}.${format === 'jpg' ? 'jpg' : 'png'}`;
+                    link.href = canvas.toDataURL(`image/${ext}`);
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -917,6 +997,19 @@
                 // Barcode SVG to Canvas/Image
                 const svg = stage.querySelector('svg');
                 if (svg) {
+                    if (format === 'svg') {
+                        const svgData = new XMLSerializer().serializeToString(svg);
+                        const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.download = `barcode-${Date.now()}.svg`;
+                        link.href = url;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        return;
+                    }
+
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     const data = (new XMLSerializer()).serializeToString(svg);
@@ -929,13 +1022,19 @@
                     img.onload = function () {
                         canvas.width = img.width;
                         canvas.height = img.height;
+                        // Fill white background for JPG
+                        if (format === 'jpg') {
+                            ctx.fillStyle = '#FFFFFF';
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        }
                         ctx.drawImage(img, 0, 0);
                         DOMURL.revokeObjectURL(url);
 
-                        const imgURI = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+                        const ext = format === 'jpg' ? 'jpeg' : 'png';
+                        const imgURI = canvas.toDataURL(`image/${ext}`).replace(`image/${ext}`, 'image/octet-stream');
 
                         const link = document.createElement('a');
-                        link.download = `barcode-${Date.now()}.png`;
+                        link.download = `barcode-${Date.now()}.${format}`;
                         link.href = imgURI;
                         document.body.appendChild(link);
                         link.click();
