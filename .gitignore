@@ -8,9 +8,3 @@ out/
 # misc
 *.tsbuildinfo
 next-env.d.ts
-
-# archived files
-old-version-archive/
-v2/
-version2/
-projects/

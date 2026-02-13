@@ -1,72 +1,56 @@
 # ⚡ Younes Lahlali | Developer Portfolio
 
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38bdf8?logo=tailwindcss&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=flat&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=flat&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=flat&logo=javascript&logoColor=%23F7DF1E)
 
-Welcome to my personal developer portfolio! This repository houses the source code for my personal website, designed to showcase my skills, experience, and the projects I've built. It features a modern, dark-themed UI with glassmorphism effects and smooth interactions.
+A modern, dark-themed developer portfolio and Code Generator Suite built with **Next.js 16**, **TypeScript**, and **Tailwind CSS 4**.
 
-## 🌟 Overview
+## 🌟 Features
 
-This portfolio is built with a focus on performance, aesthetics, and user experience. It uses **Vanilla JavaScript** and **CSS3** variables to deliver a lightweight yet visually stunning experience without the bloat of heavy frameworks.
+- **🎨 Modern Dark UI** — Sleek glassmorphism design with gradient accents
+- **📱 Fully Responsive** — Mobile-first layout that works on all devices
+- **✨ Interactive** — 3D code card, smooth scroll, hover effects
+- **🔧 Code Generator Suite** — QR codes, barcodes, bulk PDF, and camera scanner
 
-### Key Features
--   **🎨 Modern Dark UI**: Sleek, high-contrast dark mode design with glassmorphism elements.
--   **📱 Fully Responsive**: Optimized for all devices, from mobile phones to 4K desktops.
--   **✨ Interactive**: Smooth scroll animations, hover effects, and a custom cursor experience.
--   **⚡ Performance First**: Zero external framework dependencies for maximum speed.
--   **🔍 SEO Optimized**: Semantic HTML structure for better accessibility and search visibility.
+## 📂 Pages
 
----
+| Route | Description |
+|-------|-------------|
+| `/` | Portfolio — Hero, About, Skills, Projects, Contact |
+| `/generator` | Code Generator Suite with 4 modes |
 
-## 📂 Featured Projects
+## 🛠️ Tech Stack
 
-Here are some of the interactive tools and applications hosted within this portfolio:
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **Icons**: Lucide React
+- **Libraries**: JsBarcode, jsPDF, html2canvas, html5-qrcode
 
-### 1. [Barcode & QR Code Generator](./projects/barcode-generator/index.html)
-A versatile and fast tool to generate custom Barcodes and QR codes instantly.
--   **Tech**: JavaScript, QR.js, CSS3
--   **Features**: Real-time generation, downloadable images, and multiple format support.
--   **Location**: [`/projects/barcode-generator`](./projects/barcode-generator)
+## 🚀 Getting Started
 
-*(More projects coming soon!)*
+```bash
+# Clone
+git clone https://github.com/Youneslahlali/MyWebsite.git
+cd MyWebsite
 
----
+# Install
+npm install
 
-## 🛠️ Technology Stack
+# Dev server
+npm run dev        # → http://localhost:3000
 
--   **Frontend**: HTML5, CSS3 (Flexbox, Grid, Custom Properties), JavaScript (ES6+)
--   **Design**: Figma (Prototyping), FontAwesome (Icons), Google Fonts (Typography)
--   **Tools**: Git, VS Code
+# Build
+npm run build      # → static output in /out
+```
 
----
+## 📬 Contact
 
-## � Getting Started
-
-To view this portfolio locally on your machine:
-
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/Youneslahlali/MyWebsite.git
-    ```
-2.  **Navigate to the project directory**
-    ```bash
-    cd MyWebsite
-    ```
-3.  **Open `index.html`**
-    -   Simply double-click `index.html` to open it in your default browser.
-    -   For the best experience, use a live server extension in VS Code.
-
----
-
-## 📬 Contact Me
-
-Feel free to reach out if you have any questions or collaboration opportunities!
-
--   **GitHub**: [Youneslahlali](https://github.com/Youneslahlali)
--   **Email**: youneslh@proton.me
--   **LinkedIn**: [Younes Lahlali](https://www.linkedin.com/in/younes28l/)
+- **GitHub**: [Youneslahlali](https://github.com/Youneslahlali)
+- **Email**: youneslh1@proton.me
+- **LinkedIn**: [Younes Lahlali](https://www.linkedin.com/in/younes28l/)
 
 ---
 
