@@ -65,8 +65,8 @@ To view this portfolio locally on your machine:
 Feel free to reach out if you have any questions or collaboration opportunities!
 
 -   **GitHub**: [Youneslahlali](https://github.com/Youneslahlali)
--   **Email**: *[Insert your email here]*
--   **LinkedIn**: *[Insert your LinkedIn profile link here]*
+-   **Email**: youneslh@proton.me
+-   **LinkedIn**: [Younes Lahlali](https://www.linkedin.com/in/younes28l/)
 
 ---
 
