@@ -315,7 +315,68 @@
             }
         }
 
-        /* Content Type Grid */
+        @media (max-width: 600px) {
+            .suite-container {
+                padding: 80px 15px 30px;
+            }
+
+            .suite-header h1 {
+                font-size: 2rem;
+            }
+
+            /* Scrollable Tabs */
+            .mode-tabs {
+                width: 100%;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 5px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                /* Hide scrollbar Firefox */
+            }
+
+            .mode-tabs::-webkit-scrollbar {
+                display: none;
+                /* Hide scrollbar Chrome/Safari */
+            }
+
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            /* Stack Actions */
+            .actions-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .download-group {
+                width: 100%;
+            }
+
+            .download-group .action-btn {
+                flex: 1;
+            }
+
+            .preview-panel {
+                padding: 20px;
+                min-height: 350px;
+            }
+
+            .content-type-grid {
+                grid-template-columns: repeat(4, 1fr);
+                /* Ensure 4 cols on mobile */
+            }
+        }
+
         .content-type-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));

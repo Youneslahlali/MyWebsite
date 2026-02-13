@@ -84,6 +84,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- 3D Tilt Effect for Code Card ---
+    const codeCard = document.querySelector('.code-cardglass');
+    if (codeCard) {
+        codeCard.addEventListener('mousemove', (e) => {
+            const rect = codeCard.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Calculate rotation based on cursor position
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg rotation
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            codeCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        });
+
+        codeCard.addEventListener('mouseleave', () => {
+            // Reset to initial state
+            codeCard.style.transform = 'perspective(1000px) rotateY(-5deg) rotateX(5deg)';
+        });
+    }
+
     // --- Mobile Navigation ---
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');

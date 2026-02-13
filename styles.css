@@ -357,8 +357,9 @@ section {
     width: 100%;
     max-width: 400px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    transform: rotateY(-5deg) rotateX(5deg);
-    transition: transform var(--transition-medium), background 0.5s ease, border-color 0.5s ease;
+    transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+    transition: transform 0.1s ease, background 0.5s ease, border-color 0.5s ease;
+    /* Faster transition for smooth tilt */
 }
 
 [data-theme="light"] .code-cardglass {
@@ -371,9 +372,7 @@ section {
     /* Darker code text for light mode */
 }
 
-.hero:hover .code-cardglass {
-    transform: rotateY(0deg) rotateX(0deg);
-}
+/* Removed hover transform to let JS handle tilt */
 
 .code-header {
     display: flex;
@@ -403,6 +402,9 @@ section {
     font-family: 'Fira Code', monospace;
     font-size: 0.9rem;
     color: #e0e0e0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: hidden;
 }
 
 /* Syntax Highlighting */
@@ -749,32 +751,81 @@ footer {
         right: 0;
     }
 
+    /* Mobile Typography & Spacing */
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .section {
+        padding: 60px 0;
+    }
+
+    .container {
+        padding: 0 20px;
+    }
+
+    /* Stacking Grids */
+    .about-grid,
     .hero {
-        flex-direction: column-reverse;
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero {
         padding-top: 100px;
+        /* Space for fixed nav */
         height: auto;
         min-height: 100vh;
     }
 
     .hero-content {
-        text-align: center;
-        margin-top: 50px;
-    }
-
-    .hero-visual {
-        width: 100%;
-    }
-
-    .name {
-        font-size: 3rem;
-    }
-
-    .cta-buttons {
-        justify-content: center;
+        margin-bottom: 50px;
     }
 
     .about-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .about-text {
+        text-align: left;
+        /* Keep text readable */
+    }
+
+    .skills-grid {
         grid-template-columns: 1fr;
+    }
+
+    .contact-form {
+        width: 100%;
+    }
+
+    .container.small {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .name {
+        font-size: 1.8rem;
+        white-space: nowrap;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .project-image {
+        aspect-ratio: 16/9;
     }
 }
 
