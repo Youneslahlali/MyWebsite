@@ -11,6 +11,15 @@ const projects = [
         link: "/generator",
         isInternal: true,
     },
+    {
+        title: "YouTube Downloader",
+        description:
+            "Download YouTube videos and audio with ease. Choose your preferred format and quality, preview video details, and download instantly.",
+        tech: ["Next.js", "Express", "ytdl-core"],
+        color: "pink",
+        link: "/downloader",
+        isInternal: true,
+    },
 ];
 
 const colorMap: Record<string, { bg: string; hoverBg: string; hoverBorder: string; hoverText: string; tag: string; tagText: string; gradient: string }> = {
