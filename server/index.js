@@ -1,6 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-const ytdl = require("ytdl-core");
+const youtubedl = require("youtube-dl-exec");
+const { execSync } = require("child_process");
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -8,31 +12,55 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+/* ─── Check if ffmpeg is available ──────────────── */
+function hasFFmpeg() {
+    try {
+        execSync("ffmpeg -version", { stdio: "ignore" });
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+const FFMPEG_AVAILABLE = hasFFmpeg();
+console.log(`ffmpeg: ${FFMPEG_AVAILABLE ? "✅ found" : "❌ not found (quality selection limited)"}`);
+
+/* ─── Temp dir for downloads ────────────────────── */
+const TEMP_DIR = path.join(os.tmpdir(), "yt-downloads");
+if (!fs.existsSync(TEMP_DIR)) fs.mkdirSync(TEMP_DIR, { recursive: true });
+
 /* ─── Health Check ──────────────────────────────── */
 app.get("/api/health", (_req, res) => {
-    res.json({ status: "ok" });
+    res.json({ status: "ok", ffmpeg: FFMPEG_AVAILABLE });
 });
 
 /* ─── Video Info ────────────────────────────────── */
 app.get("/api/info", async (req, res) => {
     const { url } = req.query;
 
-    if (!url || !ytdl.validateURL(url)) {
-        return res.status(400).json({ error: "Invalid YouTube URL" });
+    if (!url) {
+        return res.status(400).json({ error: "Missing URL parameter" });
     }
 
     try {
-        const info = await ytdl.getInfo(url);
-        const details = info.videoDetails;
+        const info = await youtubedl(url, {
+            dumpSingleJson: true,
+            noCheckCertificates: true,
+            noWarnings: true,
+            preferFreeFormats: true,
+        });
 
         // Format duration
-        const totalSec = parseInt(details.lengthSeconds, 10);
-        const min = Math.floor(totalSec / 60);
+        const totalSec = Math.round(info.duration || 0);
+        const hrs = Math.floor(totalSec / 3600);
+        const min = Math.floor((totalSec % 3600) / 60);
         const sec = totalSec % 60;
-        const duration = `${min}:${sec.toString().padStart(2, "0")}`;
+        const duration = hrs > 0
+            ? `${hrs}:${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`
+            : `${min}:${sec.toString().padStart(2, "0")}`;
 
         // Format views
-        const views = parseInt(details.viewCount, 10);
+        const views = info.view_count || 0;
         const formattedViews =
             views >= 1_000_000
                 ? `${(views / 1_000_000).toFixed(1)}M`
@@ -41,16 +69,18 @@ app.get("/api/info", async (req, res) => {
                     : views.toString();
 
         res.json({
-            title: details.title,
-            thumbnail: details.thumbnails[details.thumbnails.length - 1]?.url || "",
+            title: info.title || "Unknown",
+            thumbnail: info.thumbnail || "",
             duration,
-            channel: details.author.name,
+            channel: info.uploader || info.channel || "Unknown",
             views: formattedViews,
-            videoId: details.videoId,
+            videoId: info.id || "",
         });
     } catch (err) {
-        console.error("Info error:", err.message);
-        res.status(500).json({ error: "Failed to fetch video info. The video may be unavailable or restricted." });
+        console.error("Info error:", err.message || err);
+        res.status(500).json({
+            error: "Failed to fetch video info. Check the URL and try again.",
+        });
     }
 });
 
@@ -58,57 +88,135 @@ app.get("/api/info", async (req, res) => {
 app.get("/api/download", async (req, res) => {
     const { url, type, quality } = req.query;
 
-    if (!url || !ytdl.validateURL(url)) {
-        return res.status(400).json({ error: "Invalid YouTube URL" });
+    if (!url) {
+        return res.status(400).json({ error: "Missing URL parameter" });
     }
 
+    const fileId = `yt-${Date.now()}`;
+    const tempFile = path.join(TEMP_DIR, fileId);
+
     try {
-        const info = await ytdl.getInfo(url);
-        const title = info.videoDetails.title.replace(/[^a-zA-Z0-9 ]/g, "");
+        // Get video title for filename
+        const info = await youtubedl(url, {
+            dumpSingleJson: true,
+            noCheckCertificates: true,
+            noWarnings: true,
+        });
+        const safeTitle = (info.title || "video").replace(/[^a-zA-Z0-9 _-]/g, "").substring(0, 100);
 
         if (type === "audio") {
-            res.setHeader("Content-Disposition", `attachment; filename="${title}.mp3"`);
-            res.setHeader("Content-Type", "audio/mpeg");
+            await downloadAudio(url, tempFile, quality);
+            const actualFile = findOutputFile(tempFile, [".m4a", ".mp3", ".webm", ".ogg", ".opus"]);
+            if (!actualFile) throw new Error("Download output not found");
 
-            ytdl(url, {
-                filter: "audioonly",
-                quality: "highestaudio",
-            }).pipe(res);
+            const ext = path.extname(actualFile).slice(1);
+            const stat = fs.statSync(actualFile);
+            const dlExt = FFMPEG_AVAILABLE ? "mp3" : ext;
+            res.setHeader("Content-Disposition", `attachment; filename="${safeTitle}.${dlExt}"`);
+            res.setHeader("Content-Type", dlExt === "mp3" ? "audio/mpeg" : "audio/mp4");
+            res.setHeader("Content-Length", stat.size);
+            const stream = fs.createReadStream(actualFile);
+            stream.pipe(res);
+            stream.on("end", () => cleanupFile(actualFile));
         } else {
-            // Video – pick the best matching quality
-            const qualityMap = {
-                "1080p": "137",  // 1080p video
-                "720p": "136",   // 720p video
-                "480p": "135",   // 480p video
-                "360p": "134",   // 360p video
-            };
+            await downloadVideo(url, tempFile, quality);
+            const actualFile = findOutputFile(tempFile, [".mp4", ".webm", ".mkv"]);
+            if (!actualFile) throw new Error("Download output not found");
 
-            res.setHeader("Content-Disposition", `attachment; filename="${title}.mp4"`);
+            const stat = fs.statSync(actualFile);
+            res.setHeader("Content-Disposition", `attachment; filename="${safeTitle}.mp4"`);
             res.setHeader("Content-Type", "video/mp4");
-
-            // Try to get the specific quality, fall back to highest available
-            const itag = qualityMap[quality];
-            const format = itag
-                ? info.formats.find((f) => f.itag === parseInt(itag, 10))
-                : null;
-
-            if (format) {
-                ytdl(url, { format }).pipe(res);
-            } else {
-                // Fallback: get best quality with both audio+video
-                ytdl(url, {
-                    quality: "highest",
-                    filter: "videoandaudio",
-                }).pipe(res);
-            }
+            res.setHeader("Content-Length", stat.size);
+            const stream = fs.createReadStream(actualFile);
+            stream.pipe(res);
+            stream.on("end", () => cleanupFile(actualFile));
         }
     } catch (err) {
-        console.error("Download error:", err.message);
+        console.error("Download error:", err.message || err);
+        cleanupFiles(tempFile);
         if (!res.headersSent) {
             res.status(500).json({ error: "Download failed. Please try again." });
         }
     }
 });
+
+/* ─── Download Functions ────────────────────────── */
+
+async function downloadVideo(url, tempFile, quality) {
+    const heightMap = { "1080p": 1080, "720p": 720, "480p": 480, "360p": 360 };
+    const height = heightMap[quality] || 720;
+
+    if (FFMPEG_AVAILABLE) {
+        // With ffmpeg: merge best video + best audio → real quality selection
+        await youtubedl(url, {
+            format: `bestvideo[height<=${height}]+bestaudio/best[height<=${height}]/best`,
+            mergeOutputFormat: "mp4",
+            output: `${tempFile}.mp4`,
+            noCheckCertificates: true,
+            noWarnings: true,
+        });
+    } else {
+        // Without ffmpeg: use pre-muxed formats (video+audio in one stream)
+        await youtubedl(url, {
+            format: `best[height<=${height}][vcodec!=none][acodec!=none]/best[vcodec!=none][acodec!=none]/best`,
+            output: `${tempFile}.%(ext)s`,
+            noCheckCertificates: true,
+            noWarnings: true,
+        });
+    }
+}
+
+async function downloadAudio(url, tempFile, quality) {
+    if (FFMPEG_AVAILABLE) {
+        // With ffmpeg: extract and convert to mp3
+        const qualityMap = { "320": 0, "192": 2, "128": 5 };
+        await youtubedl(url, {
+            extractAudio: true,
+            audioFormat: "mp3",
+            audioQuality: qualityMap[quality] || 2,
+            output: `${tempFile}.%(ext)s`,
+            noCheckCertificates: true,
+            noWarnings: true,
+        });
+    } else {
+        // Without ffmpeg: download best audio stream directly
+        await youtubedl(url, {
+            format: "bestaudio[ext=m4a]/bestaudio",
+            output: `${tempFile}.%(ext)s`,
+            noCheckCertificates: true,
+            noWarnings: true,
+        });
+    }
+}
+
+/* ─── Helpers ───────────────────────────────────── */
+
+function findOutputFile(basePath, extensions) {
+    for (const ext of extensions) {
+        const filePath = basePath + ext;
+        if (fs.existsSync(filePath)) return filePath;
+    }
+    const dir = path.dirname(basePath);
+    const prefix = path.basename(basePath);
+    try {
+        const files = fs.readdirSync(dir);
+        const match = files.find((f) => f.startsWith(prefix));
+        if (match) return path.join(dir, match);
+    } catch { /* ignore */ }
+    return null;
+}
+
+function cleanupFile(filePath) {
+    try {
+        if (filePath && fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    } catch { /* ignore */ }
+}
+
+function cleanupFiles(basePath) {
+    [".mp4", ".mp3", ".m4a", ".webm", ".mkv", ".ogg", ".opus"].forEach((ext) => {
+        cleanupFile(basePath + ext);
+    });
+}
 
 /* ─── Start Server ──────────────────────────────── */
 app.listen(PORT, () => {
