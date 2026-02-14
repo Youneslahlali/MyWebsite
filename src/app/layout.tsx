@@ -3,6 +3,8 @@ import { Outfit, Fira_Code } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -33,18 +35,21 @@ export default function RootLayout({
             <body
                 className={`${outfit.variable} ${firaCode.variable} font-sans antialiased bg-zinc-950 text-zinc-100 noise-overlay`}
             >
-                {/* Liquid Glass Background */}
-                <div className="liquid-bg">
-                    <div className="liquid-orb liquid-orb-1" />
-                    <div className="liquid-orb liquid-orb-2" />
-                    <div className="liquid-orb liquid-orb-3" />
-                    <div className="liquid-orb liquid-orb-4" />
-                </div>
+                <ThemeProvider>
+                    {/* Liquid Glass Background */}
+                    <div className="liquid-bg">
+                        <div className="liquid-orb liquid-orb-1" />
+                        <div className="liquid-orb liquid-orb-2" />
+                        <div className="liquid-orb liquid-orb-3" />
+                        <div className="liquid-orb liquid-orb-4" />
+                    </div>
 
-                <ScrollToTop />
-                <Navbar />
-                <main className="relative z-10">{children}</main>
-                <Footer />
+                    <ScrollToTop />
+                    <Navbar />
+                    <main className="relative z-10">{children}</main>
+                    <Footer />
+                    <ThemeToggle />
+                </ThemeProvider>
             </body>
         </html>
     );
