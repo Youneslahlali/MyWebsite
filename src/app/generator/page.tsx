@@ -180,12 +180,13 @@ export default function GeneratorPage() {
         stage.innerHTML = "";
         stage.style.backgroundColor = bgColor;
 
+        const isBarcodeMode = mode === "barcode" || mode === "rescan";
+
         if (mode === "qr") {
             const qrContent = getQRContent();
             const qrDiv = document.createElement("div");
             stage.appendChild(qrDiv);
 
-            // Dynamically import QRCode library
             import("qrcodejs2-fix").then(({ default: QRCode }: any) => {
                 new QRCode(qrDiv, {
                     text: qrContent,
@@ -198,14 +199,13 @@ export default function GeneratorPage() {
             }).catch(() => {
                 stage.innerHTML = `<div class="text-red-400 text-center text-sm">QR library not loaded</div>`;
             });
-        } else if (mode === "barcode") {
+        } else if (isBarcodeMode) {
             const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            svg.id = "barcode-preview";
             stage.appendChild(svg);
 
             import("jsbarcode").then(({ default: JsBarcode }) => {
                 try {
-                    JsBarcode("#barcode-preview", content || "1234567890", {
+                    JsBarcode(svg as any, content || "1234567890", {
                         format: barcodeFormat,
                         lineColor: fgColor,
                         background: bgColor,
@@ -233,11 +233,13 @@ export default function GeneratorPage() {
 
     // Stop scanner on mode change
     useEffect(() => {
-        if (mode !== "scan" && mode !== "rescan" && html5QrCodeRef.current) {
-            try {
-                html5QrCodeRef.current.stop?.().catch(() => { });
-            } catch { }
-            html5QrCodeRef.current = null;
+        if (mode !== "scan" && mode !== "rescan") {
+            if (html5QrCodeRef.current) {
+                try {
+                    html5QrCodeRef.current.stop?.().catch(() => { });
+                } catch { }
+                html5QrCodeRef.current = null;
+            }
             setScannerActive(false);
         }
     }, [mode]);
@@ -259,12 +261,17 @@ export default function GeneratorPage() {
                     setScanResult(text);
                     if (mode === "rescan") {
                         const processed = autoProcess ? text.replace(/[a-zA-Z]/g, "") : text;
-                        setContent(processed);
-                        setRescanPreview(true);
-                        // Stop scanner once we have a result in rescan mode
+                        // Stop scanner properly before updating state to avoid DOM conflicts
                         qr.stop().then(() => {
                             setScannerActive(false);
-                        }).catch(() => { });
+                            setContent(processed);
+                            setRescanPreview(true);
+                            html5QrCodeRef.current = null;
+                        }).catch(() => {
+                            // Backup cleanup
+                            setScannerActive(false);
+                            setRescanPreview(true);
+                        });
                     }
                 },
                 () => { }
@@ -650,23 +657,31 @@ export default function GeneratorPage() {
                             <div className="z-10 w-full max-w-lg flex flex-col items-center">
                                 {!rescanPreview ? (
                                     <div className="w-full space-y-6">
-                                        <div ref={scannerRef} id="rescan-reader" className="w-full rounded-2xl overflow-hidden border border-white/10 bg-black/40 aspect-square flex items-center justify-center relative">
+                                        <div className="w-full rounded-2xl overflow-hidden border border-white/10 bg-black/40 aspect-square relative group shadow-2xl">
+                                            {/* Dedicated empty box for the library to mount to */}
+                                            <div ref={scannerRef} id="rescan-reader" className="w-full h-full" />
+                                            
+                                            {/* Status Overlay (Outside the scanner div) */}
                                             {!scannerActive && (
-                                                <div className="flex flex-col items-center gap-4 text-zinc-500">
-                                                    <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center">
+                                                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-zinc-500 bg-zinc-900/50 backdrop-blur-sm">
+                                                    <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
                                                         <Camera size={24} />
                                                     </div>
-                                                    <p className="text-sm">Camera preview will appear here</p>
+                                                    <p className="text-sm font-medium">Ready to scan numerical barcodes</p>
                                                 </div>
                                             )}
+
+                                            {/* X Button Overlay */}
                                             {scannerActive && (
                                                 <div className="absolute top-4 right-4 z-50">
                                                     <button
                                                         onClick={() => {
-                                                            html5QrCodeRef.current?.stop();
-                                                            setScannerActive(false);
+                                                            html5QrCodeRef.current?.stop().then(() => {
+                                                                setScannerActive(false);
+                                                                html5QrCodeRef.current = null;
+                                                            });
                                                         }}
-                                                        className="p-2 bg-black/50 hover:bg-red-500/50 rounded-full text-white transition-all backdrop-blur-md"
+                                                        className="p-2.5 bg-black/60 hover:bg-red-500 text-white rounded-full transition-all backdrop-blur-md border border-white/10 shadow-lg"
                                                     >
                                                         <X size={20} />
                                                     </button>
@@ -676,9 +691,9 @@ export default function GeneratorPage() {
                                         {!scannerActive && (
                                             <button
                                                 onClick={startScanner}
-                                                className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl transition-all flex items-center justify-center gap-3 shadow-xl shadow-indigo-500/30 ring-2 ring-indigo-400/20"
+                                                className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white text-lg font-bold rounded-2xl transition-all flex items-center justify-center gap-3 shadow-xl shadow-indigo-500/30 active:scale-[0.98]"
                                             >
-                                                <Camera size={20} /> Start Utility Scanner
+                                                <Camera size={22} /> Start Utility Scanner
                                             </button>
                                         )}
                                     </div>
