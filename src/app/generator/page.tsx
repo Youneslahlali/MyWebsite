@@ -18,10 +18,12 @@ import {
     Wifi,
     Contact,
     Layers,
+    RefreshCw,
+    X,
 } from "lucide-react";
 
 // ===== TYPES =====
-type Mode = "qr" | "barcode" | "bulk" | "scan";
+type Mode = "qr" | "barcode" | "bulk" | "scan" | "rescan";
 type QRInputType = "text" | "url" | "email" | "phone" | "sms" | "wifi" | "vcard";
 
 const modes = [
@@ -29,6 +31,7 @@ const modes = [
     { id: "barcode" as Mode, label: "Barcode", icon: Barcode },
     { id: "bulk" as Mode, label: "Bulk Barcodes", icon: FileText },
     { id: "scan" as Mode, label: "Scanner", icon: Camera },
+    { id: "rescan" as Mode, label: "Rescan Utility", icon: RefreshCw },
 ];
 
 const qrInputTypes = [
@@ -51,6 +54,76 @@ const barcodeFormats = [
     { value: "pharmacode", label: "Pharmacode" },
 ];
 
+// ===== COMPONENTS =====
+function CustomSelect({
+    value,
+    onChange,
+    options,
+    className = "",
+}: {
+    value: string;
+    onChange: (val: string) => void;
+    options: { value: string; label: string }[];
+    className?: string;
+}) {
+    const [isOpen, setIsOpen] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const selectedOption = options.find((opt) => opt.value === value);
+
+    return (
+        <div className={`relative ${className}`} ref={containerRef}>
+            <button
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex items-center justify-between px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-indigo-500 transition-all hover:bg-white/5"
+            >
+                <span className="truncate">{selectedOption?.label || "Select..."}</span>
+                <svg
+                    className={`w-4 h-4 text-zinc-500 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            {isOpen && (
+                <div className="absolute z-50 w-full mt-2 py-1 bg-[#12121e] border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in duration-200">
+                    <div className="max-h-60 overflow-y-auto custom-scrollbar">
+                        {options.map((opt) => (
+                            <button
+                                key={opt.value}
+                                onClick={() => {
+                                    onChange(opt.value);
+                                    setIsOpen(false);
+                                }}
+                                className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${opt.value === value
+                                    ? "bg-indigo-600 text-white"
+                                    : "text-zinc-400 hover:text-white hover:bg-white/5"
+                                    }`}
+                            >
+                                {opt.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
 export default function GeneratorPage() {
     const [mode, setMode] = useState<Mode>("barcode");
     const [inputType, setInputType] = useState<QRInputType>("text");
@@ -68,6 +141,8 @@ export default function GeneratorPage() {
     const [copied, setCopied] = useState(false);
     const [scanResult, setScanResult] = useState("");
     const [scannerActive, setScannerActive] = useState(false);
+    const [autoProcess, setAutoProcess] = useState(true);
+    const [rescanPreview, setRescanPreview] = useState(false);
 
     // WiFi fields
     const [wifiSSID, setWifiSSID] = useState("");
@@ -158,7 +233,7 @@ export default function GeneratorPage() {
 
     // Stop scanner on mode change
     useEffect(() => {
-        if (mode !== "scan" && html5QrCodeRef.current) {
+        if (mode !== "scan" && mode !== "rescan" && html5QrCodeRef.current) {
             try {
                 html5QrCodeRef.current.stop?.().catch(() => { });
             } catch { }
@@ -170,9 +245,11 @@ export default function GeneratorPage() {
     // Scanner
     const startScanner = async () => {
         if (!scannerRef.current) return;
+        const targetId = mode === "rescan" ? "rescan-reader" : "scanner-reader";
+
         try {
             const { Html5Qrcode } = await import("html5-qrcode");
-            const qr = new Html5Qrcode("scanner-reader");
+            const qr = new Html5Qrcode(targetId);
             html5QrCodeRef.current = qr;
             setScannerActive(true);
             await qr.start(
@@ -180,6 +257,15 @@ export default function GeneratorPage() {
                 { fps: 10, qrbox: { width: 250, height: 250 } },
                 (text: string) => {
                     setScanResult(text);
+                    if (mode === "rescan") {
+                        const processed = autoProcess ? text.replace(/[a-zA-Z]/g, "") : text;
+                        setContent(processed);
+                        setRescanPreview(true);
+                        // Stop scanner once we have a result in rescan mode
+                        qr.stop().then(() => {
+                            setScannerActive(false);
+                        }).catch(() => { });
+                    }
                 },
                 () => { }
             );
@@ -363,11 +449,15 @@ export default function GeneratorPage() {
                                     <div className="space-y-2">
                                         <input value={wifiSSID} onChange={(e) => setWifiSSID(e.target.value)} placeholder="Network Name (SSID)" className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors" />
                                         <input value={wifiPass} onChange={(e) => setWifiPass(e.target.value)} placeholder="Password" className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors" />
-                                        <select value={wifiEnc} onChange={(e) => setWifiEnc(e.target.value)} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white focus:outline-none focus:border-indigo-500 transition-colors">
-                                            <option value="WPA">WPA/WPA2</option>
-                                            <option value="WEP">WEP</option>
-                                            <option value="nopass">No Encryption</option>
-                                        </select>
+                                        <CustomSelect
+                                            value={wifiEnc}
+                                            onChange={setWifiEnc}
+                                            options={[
+                                                { value: "WPA", label: "WPA/WPA2" },
+                                                { value: "WEP", label: "WEP" },
+                                                { value: "nopass", label: "No Encryption" },
+                                            ]}
+                                        />
                                     </div>
                                 ) : mode === "qr" && inputType === "sms" ? (
                                     <div className="space-y-2">
@@ -411,11 +501,11 @@ export default function GeneratorPage() {
                         {(mode === "barcode" || mode === "bulk") && (
                             <div>
                                 <label className="block text-xs font-medium text-zinc-500 uppercase tracking-wider mb-2">Barcode Format</label>
-                                <select value={barcodeFormat} onChange={(e) => setBarcodeFormat(e.target.value)} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white focus:outline-none focus:border-indigo-500 transition-colors">
-                                    {barcodeFormats.map((f) => (
-                                        <option key={f.value} value={f.value}>{f.label}</option>
-                                    ))}
-                                </select>
+                                <CustomSelect
+                                    value={barcodeFormat}
+                                    onChange={setBarcodeFormat}
+                                    options={barcodeFormats}
+                                />
                             </div>
                         )}
 
@@ -423,12 +513,16 @@ export default function GeneratorPage() {
                         {mode === "qr" && (
                             <div>
                                 <label className="block text-xs font-medium text-zinc-500 uppercase tracking-wider mb-2">Error Correction</label>
-                                <select value={eccLevel} onChange={(e) => setEccLevel(e.target.value)} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white focus:outline-none focus:border-indigo-500 transition-colors">
-                                    <option value="L">Low (7%)</option>
-                                    <option value="M">Medium (15%)</option>
-                                    <option value="Q">Quartile (25%)</option>
-                                    <option value="H">High (30%)</option>
-                                </select>
+                                <CustomSelect
+                                    value={eccLevel}
+                                    onChange={setEccLevel}
+                                    options={[
+                                        { value: "L", label: "Low (7%)" },
+                                        { value: "M", label: "Medium (15%)" },
+                                        { value: "Q", label: "Quartile (25%)" },
+                                        { value: "H", label: "High (30%)" },
+                                    ]}
+                                />
                             </div>
                         )}
 
@@ -437,10 +531,14 @@ export default function GeneratorPage() {
                             <div className="space-y-3">
                                 <div>
                                     <label className="block text-xs font-medium text-zinc-500 uppercase tracking-wider mb-2">Code Type</label>
-                                    <select value={bulkType} onChange={(e) => setBulkType(e.target.value)} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white focus:outline-none focus:border-indigo-500 transition-colors">
-                                        <option value="barcode">Barcode (Code 128)</option>
-                                        <option value="qr">QR Code</option>
-                                    </select>
+                                    <CustomSelect
+                                        value={bulkType}
+                                        onChange={setBulkType}
+                                        options={[
+                                            { value: "barcode", label: "Barcode (Code 128)" },
+                                            { value: "qr", label: "QR Code" },
+                                        ]}
+                                    />
                                 </div>
                                 <label className="flex items-center gap-2 text-zinc-400 text-sm cursor-pointer">
                                     <input type="checkbox" checked={showText} onChange={(e) => setShowText(e.target.checked)} className="accent-indigo-500" />
@@ -487,13 +585,42 @@ export default function GeneratorPage() {
                         )}
 
                         {/* Generate Button */}
-                        {mode !== "scan" && (
+                        {mode !== "scan" && mode !== "rescan" && (
                             <button
                                 onClick={mode === "bulk" ? generateBulkPDF : generate}
                                 className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20"
                             >
                                 {mode === "bulk" ? <><FileText size={18} /> Generate PDF</> : <><Wand2 size={18} /> Generate Code</>}
                             </button>
+                        )}
+
+                        {mode === "rescan" && (
+                            <div className="space-y-4">
+                                <label className="flex items-center gap-3 p-3 bg-indigo-500/10 rounded-xl border border-indigo-500/20 cursor-pointer group hover:bg-indigo-500/20 transition-all">
+                                    <input
+                                        type="checkbox"
+                                        checked={autoProcess}
+                                        onChange={(e) => setAutoProcess(e.target.checked)}
+                                        className="w-4 h-4 rounded accent-indigo-500"
+                                    />
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-semibold text-white group-hover:text-indigo-300 transition-colors">Clean Digits</span>
+                                        <span className="text-[10px] text-zinc-400">Remove all letters from result</span>
+                                    </div>
+                                </label>
+                                {rescanPreview && (
+                                    <button
+                                        onClick={() => {
+                                            setRescanPreview(false);
+                                            setScanResult("");
+                                            setScannerActive(false);
+                                        }}
+                                        className="w-full py-3 px-4 bg-white/5 border border-white/10 text-white text-sm rounded-xl font-medium hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+                                    >
+                                        <RefreshCw size={14} /> Scan Another
+                                    </button>
+                                )}
+                            </div>
                         )}
                     </aside>
 
@@ -516,6 +643,76 @@ export default function GeneratorPage() {
                                 {scanResult && (
                                     <div className="p-4 bg-black/30 rounded-xl border border-green-500/30">
                                         <p className="text-green-400 font-mono text-sm break-all">{scanResult}</p>
+                                    </div>
+                                )}
+                            </div>
+                        ) : mode === "rescan" ? (
+                            <div className="z-10 w-full max-w-lg flex flex-col items-center">
+                                {!rescanPreview ? (
+                                    <div className="w-full space-y-6">
+                                        <div ref={scannerRef} id="rescan-reader" className="w-full rounded-2xl overflow-hidden border border-white/10 bg-black/40 aspect-square flex items-center justify-center relative">
+                                            {!scannerActive && (
+                                                <div className="flex flex-col items-center gap-4 text-zinc-500">
+                                                    <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center">
+                                                        <Camera size={24} />
+                                                    </div>
+                                                    <p className="text-sm">Camera preview will appear here</p>
+                                                </div>
+                                            )}
+                                            {scannerActive && (
+                                                <div className="absolute top-4 right-4 z-50">
+                                                    <button
+                                                        onClick={() => {
+                                                            html5QrCodeRef.current?.stop();
+                                                            setScannerActive(false);
+                                                        }}
+                                                        className="p-2 bg-black/50 hover:bg-red-500/50 rounded-full text-white transition-all backdrop-blur-md"
+                                                    >
+                                                        <X size={20} />
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                        {!scannerActive && (
+                                            <button
+                                                onClick={startScanner}
+                                                className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl transition-all flex items-center justify-center gap-3 shadow-xl shadow-indigo-500/30 ring-2 ring-indigo-400/20"
+                                            >
+                                                <Camera size={20} /> Start Utility Scanner
+                                            </button>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                        <div className="flex flex-col items-center gap-6">
+                                            <div className="flex items-center gap-4 w-full">
+                                                <div className="flex-1 p-4 bg-black/40 rounded-2xl border border-white/10 space-y-1">
+                                                    <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Original Scan</span>
+                                                    <p className="text-sm text-zinc-300 font-mono italic break-all line-through opacity-50">{scanResult}</p>
+                                                </div>
+                                                <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/20">
+                                                    <Wand2 size={18} className="text-white" />
+                                                </div>
+                                                <div className="flex-1 p-4 bg-indigo-500/10 rounded-2xl border border-indigo-500/20 space-y-1">
+                                                    <span className="text-[10px] uppercase tracking-widest text-indigo-400 font-bold">Processed Result</span>
+                                                    <p className="text-sm text-white font-mono font-bold break-all">{content}</p>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                ref={previewRef}
+                                                className="bg-white p-8 rounded-2xl shadow-2xl ring-1 ring-white/10 scale-110 sm:scale-125 my-8 transform transition-all"
+                                            />
+
+                                            <div className="flex gap-4 w-full">
+                                                <button onClick={handleCopy} className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white font-semibold hover:bg-white/10 transition-all">
+                                                    {copied ? <><Check size={18} /> Copied</> : <><Copy size={18} /> Copy Code</>}
+                                                </button>
+                                                <button onClick={handleDownload} className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/20">
+                                                    <Download size={18} /> Download
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -542,7 +739,11 @@ export default function GeneratorPage() {
                                         <button onClick={handleDownload} className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors text-sm">
                                             <Download size={16} /> Download
                                         </button>
-                                        <select value={downloadFormat} onChange={(e) => setDownloadFormat(e.target.value)} className="bg-indigo-700 text-white text-sm font-semibold px-3 border-l border-indigo-500 focus:outline-none cursor-pointer">
+                                        <select
+                                            value={downloadFormat}
+                                            onChange={(e) => setDownloadFormat(e.target.value)}
+                                            className="bg-indigo-700 text-white text-xs font-bold px-4 py-2 border-l border-indigo-500 focus:outline-none cursor-pointer appearance-none"
+                                        >
                                             <option value="png">PNG</option>
                                             <option value="jpg">JPG</option>
                                             <option value="svg">SVG</option>
