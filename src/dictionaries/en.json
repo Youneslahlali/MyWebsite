@@ -1,0 +1,72 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About Us",
+    "products": "Products",
+    "careers": "Careers",
+    "contact": "Contact",
+    "locations": "Locations"
+  },
+  "hero": {
+    "title": "Powering the Future of Mobility",
+    "subtitle": "Global leader in automotive wiring harness systems, driving innovation from the heart of Morocco.",
+    "cta": "Explore Solutions"
+  },
+  "stats": {
+    "employees": "10,000+ Employees",
+    "years": "20+ Years in Morocco",
+    "clients": "Trusted by VW Group"
+  },
+  "products": {
+    "title": "Industrial Excellence",
+    "subtitle": "High-performance wiring systems for the next generation of vehicles.",
+    "list": [
+      { "name": "Low Voltage Harnesses", "desc": "Standard electrical systems for safety and comfort." },
+      { "name": "High Voltage Systems", "desc": "Powering electric and hybrid drive technologies." },
+      { "name": "Control Units", "desc": "Precision electronic components for vehicle logic." }
+    ]
+  },
+  "about": {
+    "title": "Our Legacy",
+    "content": "Founded in 2001 in Tangier, SEBN-MA has grown from AWSM to a core part of the Sumitomo Electric Bordnetze Group. With over 20 years of expertise in Morocco, we are the backbone of automotive electrical systems."
+  },
+  "values": {
+    "title": "Our Core Values",
+    "list": [
+      { "name": "Responsibility", "desc": "Taking ownership of our actions and results." },
+      { "name": "Respect", "desc": "Valuing every individual and our common environment." },
+      { "name": "Trust", "desc": "Building strong relationships through reliability." },
+      { "name": "Cooperation", "desc": "Working together to achieve excellence." }
+    ]
+  },
+  "locations": {
+    "title": "Strategic Presence",
+    "tangier": {
+      "name": "Tangier Plant",
+      "address": "Tangier Free Zone, Lot 32, MA 90 000",
+      "specialty": "Main Production & Export Hub"
+    },
+    "sale": {
+      "name": "Salé Plant",
+      "address": "Industrial Acceleration Zone, Lot 20, MA-Sale 11052",
+      "specialty": "New Production Site (Est. 2022)"
+    }
+  },
+  "careers": {
+    "title": "Join Our Team",
+    "subtitle": "Join 10,000+ professionals shaping the future of the automotive industry. We collaborate with local universities and engineering schools to develop the next generation of talent.",
+    "cta": "Search Openings"
+  },
+  "partners": {
+    "title": "Our Trusted Partners",
+    "subtitle": "We provide electrical systems for the world's most prestigious automotive brands.",
+    "brands": ["Volkswagen", "Audi", "Seat", "Skoda", "Porsche", "Bentley"]
+  },
+  "footer": {
+    "copyright": "© 2026 SEBN-MA. All rights reserved. Part of Sumitomo Electric Group.",
+    "links": {
+        "linkedin": "https://www.linkedin.com/company/sebn-ma",
+        "parent": "https://www.sebn.com"
+    }
+  }
+}

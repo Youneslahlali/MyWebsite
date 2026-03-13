@@ -10,6 +10,12 @@
 
     --color-surface: rgba(255, 255, 255, 0.03);
     --color-border: rgba(255, 255, 255, 0.08);
+
+    --font-arabic: var(--font-cairo), sans-serif;
+}
+
+.font-arabic {
+    font-family: var(--font-cairo), sans-serif;
 }
 
 /* Smooth Scroll */

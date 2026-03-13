@@ -1,0 +1,72 @@
+{
+  "navigation": {
+    "home": "Accueil",
+    "about": "À Propos",
+    "products": "Produits",
+    "careers": "Carrières",
+    "contact": "Contact",
+    "locations": "Sites"
+  },
+  "hero": {
+    "title": "Propulser l'Avenir de la Mobilité",
+    "subtitle": "Leader mondial des systèmes de câblage automobile, moteur d'innovation au cœur du Maroc.",
+    "cta": "Découvrir nos Solutions"
+  },
+  "stats": {
+    "employees": "10 000+ Employés",
+    "years": "20+ Ans au Maroc",
+    "clients": "Partenaire du Groupe VW"
+  },
+  "products": {
+    "title": "Excellence Industrielle",
+    "subtitle": "Systèmes de câblage haute performance pour la prochaine génération de véhicules.",
+    "list": [
+      { "name": "Faisceaux Basse Tension", "desc": "Systèmes électriques standard pour la sécurité et le confort." },
+      { "name": "Systèmes Haute Tension", "desc": "Alimentation des technologies de propulsion électrique et hybride." },
+      { "name": "Unités de Contrôle", "desc": "Composants électroniques de précision pour la logique du véhicule." }
+    ]
+  },
+  "about": {
+    "title": "Notre Héritage",
+    "content": "Fondée en 2001 à Tanger, SEBN-MA est passée d'AWSM à une partie centrale du groupe Sumitomo Electric Bordnetze. Avec plus de 20 ans d'expertise au Maroc, nous sommes le pilier des systèmes électriques automobiles."
+  },
+  "values": {
+    "title": "Nos Valeurs Fondamentales",
+    "list": [
+      { "name": "Responsabilité", "desc": "Assumer la responsabilité de nos actions et résultats." },
+      { "name": "Respect", "desc": "Valoriser chaque individu et notre environnement commun." },
+      { "name": "Confiance", "desc": "Bâtir des relations solides fondées sur la fiabilité." },
+      { "name": "Coopération", "desc": "Travailler ensemble pour atteindre l'excellence." }
+    ]
+  },
+  "locations": {
+    "title": "Présence Stratégique",
+    "tangier": {
+      "name": "Usine de Tanger",
+      "address": "Zone Franche de Tanger, Lot 32, MA 90 000",
+      "specialty": "Principal Centre de Production et d'Exportation"
+    },
+    "sale": {
+      "name": "Usine de Salé",
+      "address": "Zone d'Accélération Industrielle, Lot 20, MA-Sale 11052",
+      "specialty": "Nouveau Site de Production (Fondé en 2022)"
+    }
+  },
+  "careers": {
+    "title": "Rejoignez Notre Équipe",
+    "subtitle": "Rejoignez plus de 10 000 professionnels façonnant l'avenir de l'industrie automobile. Nous collaborons avec les universités locales pour développer les talents de demain.",
+    "cta": "Voir les Offres"
+  },
+  "partners": {
+    "title": "Nos Partenaires de Confiance",
+    "subtitle": "Nous fournissons des systèmes électriques pour les marques automobiles les plus prestigieuses au monde.",
+    "brands": ["Volkswagen", "Audi", "Seat", "Skoda", "Porsche", "Bentley"]
+  },
+  "footer": {
+    "copyright": "© 2026 SEBN-MA. Tous droits réservés. Filiale du Groupe Sumitomo Electric.",
+    "links": {
+        "linkedin": "https://www.linkedin.com/company/sebn-ma",
+        "parent": "https://www.sebn.com"
+    }
+  }
+}
