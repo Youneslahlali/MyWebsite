@@ -11,7 +11,12 @@
     --color-surface: rgba(255, 255, 255, 0.03);
     --color-border: rgba(255, 255, 255, 0.08);
 
+    --color-sebn-purple: #330066;
     --font-arabic: var(--font-cairo), sans-serif;
+}
+
+.sebn-corporate.noise-overlay::after {
+    display: none;
 }
 
 .font-arabic {

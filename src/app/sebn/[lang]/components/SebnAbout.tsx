@@ -1,29 +1,42 @@
 export function SebnAbout({ dict }: { dict: any }) {
     return (
-        <section id="about" className="py-24">
-            <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div className="relative">
-                    <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-600/20 rounded-full blur-2xl" />
-                    <img 
-                        src="https://images.unsplash.com/photo-1565608411388-e932463e6962?auto=format&fit=crop&q=80&w=1000" 
-                        alt="Factory Production" 
-                        className="rounded-2xl border border-white/10 shadow-xl"
-                    />
-                    <div className="absolute -bottom-6 -right-6 p-6 bg-blue-600 rounded-2xl shadow-xl hidden md:block">
-                        <div className="text-3xl font-bold text-white">20+</div>
-                        <div className="text-sm text-blue-100">Years of Excellence</div>
+        <section id="about" className="py-20 bg-white">
+            <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                {/* Text Side */}
+                <div className="lg:col-span-8 space-y-8">
+                    <h2 className="text-3xl font-bold text-[#330066] border-b-2 border-[#330066] pb-2 inline-block">
+                        SEBN au Maroc
+                    </h2>
+                    <div className="space-y-4 text-slate-700 leading-relaxed text-sm">
+                        <p>{dict.about.content}</p>
+                        <p>Nous sommes spécialisés dans la production de systèmes de câblage électrique pour les véhicules à moteur à combustion ainsi que les véhicules à propulsion électrique, y compris les faisceaux à haute tension.</p>
+                        <h3 className="text-lg font-bold text-[#330066] mt-6">Un succès grâce à une vision claire</h3>
+                        <p>Notre succès repose sur une stratégie d&apos;entreprise dynamique ainsi que sur une politique de capital humain forte qui privilégie des valeurs telles que la responsabilité, le respect, la confiance et la coopération. SEBN-MA renforce sa position d&apos;acteur majeur dans le secteur de l&apos;automobile au Maroc.</p>
                     </div>
                 </div>
-                <div className="space-y-6">
-                    <h2 className="text-3xl md:text-5xl font-bold">{dict.about.title}</h2>
-                    <p className="text-slate-400 text-lg leading-relaxed italic border-l-4 border-blue-600 pl-6 rtl:border-l-0 rtl:border-r-4 rtl:pl-0 rtl:pr-6">
-                        {dict.about.content}
-                    </p>
-                    <div className="pt-8">
-                        <div className="flex items-center gap-4 text-slate-300">
-                            <div className="w-12 h-[1px] bg-blue-500" />
-                            <span className="uppercase tracking-widest text-xs font-bold">Sumitomo Electric Bordnetze</span>
+
+                {/* Info Boxes Side */}
+                <div className="lg:col-span-4 flex flex-col gap-4">
+                    <div className="bg-[#330066] p-8 text-center text-white flex flex-col items-center justify-center">
+                        <div className="w-10 h-10 mb-2 border-2 border-white flex items-center justify-center">
+                            <i className="lucide-building-2" />
                         </div>
+                        <div className="text-3xl font-bold">2001</div>
+                        <div className="text-xs uppercase tracking-widest opacity-70">Fondation</div>
+                    </div>
+                    <div className="bg-[#330066] p-8 text-center text-white flex flex-col items-center justify-center">
+                        <div className="w-10 h-10 mb-2 border-2 border-white flex items-center justify-center">
+                            <i className="lucide-factory" />
+                        </div>
+                        <div className="text-3xl font-bold">2022</div>
+                        <div className="text-xs uppercase tracking-widest opacity-70">Site Salé</div>
+                    </div>
+                    <div className="bg-[#330066] p-8 text-center text-white flex flex-col items-center justify-center">
+                        <div className="w-10 h-10 mb-2 border-2 border-white flex items-center justify-center text-xl">
+                            🤝
+                        </div>
+                        <div className="text-3xl font-bold">+10K</div>
+                        <div className="text-xs uppercase tracking-widest opacity-70">Employés</div>
                     </div>
                 </div>
             </div>

@@ -11,15 +11,6 @@ const projects = [
         link: "/generator",
         isInternal: true,
     },
-    {
-        title: "SEBN-MA Remake",
-        description:
-            "A premium multilingual corporate website remake for Sumitomo Electric Bordnetze Morocco. Features AR/FR/EN support and industrial aesthetics.",
-        tech: ["Next.js", "i18n", "RTL support"],
-        color: "blue",
-        link: "/sebn/en",
-        isInternal: true,
-    },
 ];
 
 const colorMap: Record<string, { bg: string; hoverBg: string; hoverBorder: string; hoverText: string; tag: string; tagText: string; gradient: string }> = {
@@ -31,15 +22,6 @@ const colorMap: Record<string, { bg: string; hoverBg: string; hoverBorder: strin
         tag: "bg-indigo-500/10 border-indigo-500/20",
         tagText: "text-indigo-300",
         gradient: "from-indigo-500 to-purple-500",
-    },
-    blue: {
-        bg: "bg-blue-900/20",
-        hoverBg: "group-hover:bg-blue-900/30",
-        hoverBorder: "hover:border-blue-500/50",
-        hoverText: "group-hover:text-blue-400",
-        tag: "bg-blue-500/10 border-blue-500/20",
-        tagText: "text-blue-300",
-        gradient: "from-blue-600 to-cyan-500",
     },
 };
 

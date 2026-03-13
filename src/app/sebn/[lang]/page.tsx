@@ -24,18 +24,15 @@ export default async function SebnPage({
 
     return (
         <div 
-            className={`min-h-screen bg-slate-950 text-slate-50 ${isRtl ? "font-arabic" : "font-sans"}`} 
+            className={`min-h-screen bg-white text-slate-900 ${isRtl ? "font-arabic" : "font-sans"} sebn-corporate`} 
             dir={isRtl ? "rtl" : "ltr"}
         >
             <SebnNavbar lang={lang} dict={dict} />
-            <main>
+            <main className="pt-20">
                 <SebnHero dict={dict} />
-                <SebnPartners dict={dict} />
-                <SebnValues dict={dict} />
-                <SebnProducts dict={dict} />
-                <SebnAbout dict={dict} />
-                <SebnLocations dict={dict} />
                 <SebnCareers dict={dict} />
+                <SebnLocations dict={dict} />
+                <SebnAbout dict={dict} />
             </main>
             <SebnFooter dict={dict} />
         </div>
