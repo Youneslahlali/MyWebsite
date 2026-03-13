@@ -34,7 +34,9 @@ export function SebnLocations({ dict }: { dict: any }) {
                     <img 
                         src="https://www.worldatlas.com/upload/61/89/3f/ma-01.png" 
                         alt="Morocco Map" 
-                        className="max-h-[400px] grayscale opacity-40"
+                        loading="lazy"
+                        decoding="async"
+                        className="max-h-[400px] grayscale opacity-40 w-auto h-auto"
                     />
                     {/* Markers */}
                     <div className="absolute top-[10%] left-[45%] group">

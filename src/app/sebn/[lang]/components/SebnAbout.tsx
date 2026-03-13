@@ -1,3 +1,5 @@
+import { Building2, Factory, Users } from "lucide-react";
+
 export function SebnAbout({ dict }: { dict: any }) {
     return (
         <section id="about" className="py-20 bg-white">
@@ -18,22 +20,22 @@ export function SebnAbout({ dict }: { dict: any }) {
                 {/* Info Boxes Side */}
                 <div className="lg:col-span-4 flex flex-col gap-4">
                     <div className="bg-[#330066] p-8 text-center text-white flex flex-col items-center justify-center">
-                        <div className="w-10 h-10 mb-2 border-2 border-white flex items-center justify-center">
-                            <i className="lucide-building-2" />
+                        <div className="w-10 h-10 mb-2 flex items-center justify-center">
+                            <Building2 size={32} />
                         </div>
                         <div className="text-3xl font-bold">2001</div>
                         <div className="text-xs uppercase tracking-widest opacity-70">Fondation</div>
                     </div>
                     <div className="bg-[#330066] p-8 text-center text-white flex flex-col items-center justify-center">
-                        <div className="w-10 h-10 mb-2 border-2 border-white flex items-center justify-center">
-                            <i className="lucide-factory" />
+                        <div className="w-10 h-10 mb-2 flex items-center justify-center">
+                            <Factory size={32} />
                         </div>
                         <div className="text-3xl font-bold">2022</div>
                         <div className="text-xs uppercase tracking-widest opacity-70">Site Salé</div>
                     </div>
                     <div className="bg-[#330066] p-8 text-center text-white flex flex-col items-center justify-center">
-                        <div className="w-10 h-10 mb-2 border-2 border-white flex items-center justify-center text-xl">
-                            🤝
+                        <div className="w-10 h-10 mb-2 flex items-center justify-center">
+                            <Users size={32} />
                         </div>
                         <div className="text-3xl font-bold">+10K</div>
                         <div className="text-xs uppercase tracking-widest opacity-70">Employés</div>
