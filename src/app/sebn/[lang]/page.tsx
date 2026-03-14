@@ -70,6 +70,9 @@ export default async function SebnPage({
             <SebnNavbar lang={lang} dict={dict} />
             <main className="pt-20">
                 <SebnHero dict={dict} />
+                <SebnValues dict={dict} />
+                <SebnProducts dict={dict} />
+                <SebnPartners dict={dict} />
                 <SebnCareers dict={dict} />
                 <SebnLocations dict={dict} />
                 <SebnAbout dict={dict} />

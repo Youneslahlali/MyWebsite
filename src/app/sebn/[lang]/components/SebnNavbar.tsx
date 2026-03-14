@@ -18,7 +18,7 @@ export function SebnNavbar({ lang, dict }: { lang: string; dict: any }) {
     const isRtl = lang === "ar";
 
     return (
-        <nav className="fixed top-0 w-full z-[100] bg-white border-b border-slate-200">
+        <nav className="fixed top-0 w-full z-[100] bg-white/80 backdrop-blur-xl saturate-150 border-b border-slate-200/50 shadow-sm transition-all duration-300">
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 {/* Logo approximation of Sumitomo */}
                 <Link href={`/sebn/${lang}`} className="flex items-center gap-2">
@@ -50,7 +50,7 @@ export function SebnNavbar({ lang, dict }: { lang: string; dict: any }) {
                                 key={l.code}
                                 href={pathname.replace(`/${lang}`, `/${l.code}`)}
                                 className={`text-xs font-bold transition-colors ${
-                                    lang === l.code ? "text-[#330066]" : "text-slate-400 hover:text-slate-600"
+                                    lang === l.code ? "text-[#330066]" : "text-slate-500 hover:text-[#330066]"
                                 }`}
                             >
                                 {l.label}
