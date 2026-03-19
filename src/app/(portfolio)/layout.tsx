@@ -7,16 +7,10 @@ export default function PortfolioLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <div className="liquid-bg">
-        <div className="liquid-orb liquid-orb-1" />
-        <div className="liquid-orb liquid-orb-2" />
-        <div className="liquid-orb liquid-orb-3" />
-        <div className="liquid-orb liquid-orb-4" />
-      </div>
+    <div className="min-h-screen selection:bg-[#eaff00] selection:text-black">
       <Navbar />
       {children}
       <Footer />
-    </>
+    </div>
   );
 }

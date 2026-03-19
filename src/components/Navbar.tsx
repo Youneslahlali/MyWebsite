@@ -1,112 +1,56 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
-const navLinks = [
-    { label: "Home", href: "#home" },
-    { label: "About", href: "#about" },
-    { label: "Skills", href: "#skills" },
-    { label: "Work", href: "#projects" },
-    { label: "Contact", href: "#contact" },
-];
-
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-
-    useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 50);
-        window.addEventListener("scroll", onScroll);
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
-
-    useEffect(() => {
-        document.body.style.overflow = isOpen ? "hidden" : "";
-        return () => { document.body.style.overflow = ""; };
-    }, [isOpen]);
+    const [showBanner, setShowBanner] = useState(true);
 
     return (
-        <header
-            className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-                ? "bg-zinc-950/80 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/20"
-                : "bg-transparent"
-                }`}
-        >
-            <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                {/* Logo */}
-                <Link href="/" className="text-2xl font-bold tracking-wide text-white">
-                    YL<span className="text-indigo-500">.</span>
-                </Link>
-
-                {/* Desktop Nav */}
-                <nav className="hidden md:flex items-center gap-8">
-                    {navLinks.map((link) => (
-                        <a
-                            key={link.href}
-                            href={link.href}
-                            className="text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200"
-                        >
-                            {link.label}
-                        </a>
-                    ))}
-                    <a
-                        href="#contact"
-                        className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-full transition-all duration-200 shadow-lg shadow-indigo-500/20"
+        <header className="w-full relative z-50 bg-white dark:bg-black transition-colors duration-300 selection:bg-[#eaff00] selection:text-black border-b-[4px] border-black dark:border-white">
+            {showBanner && (
+                <div className="w-full bg-[#bcffb1] dark:bg-[#e9ff00] py-2 px-4 flex justify-center items-center text-black text-xs md:text-sm font-bold relative border-b-[4px] border-black dark:border-white">
+                    <p className="tracking-tight text-center max-w-[90%]">
+                        Explore my latest projects and frontend development work <strong><Link href="#projects">HERE.</Link></strong>
+                    </p>
+                    <button
+                        onClick={() => setShowBanner(false)}
+                        className="absolute right-4 text-black hover:opacity-70 transition-opacity p-2"
+                        aria-label="Close banner"
                     >
-                        Let&apos;s Talk
-                    </a>
+                        ✕
+                    </button>
+                </div>
+            )}
+            <div className="max-w-7xl mx-auto px-6 h-32 flex items-center justify-between">
+                <Link href="/" className="border-[4px] border-black dark:border-white py-2 px-6 flex items-baseline font-black text-4xl md:text-5xl tracking-tighter text-black dark:text-white select-none w-max shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] bg-white dark:bg-black hover:translate-x-1 hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[0px_0px_0px_0px_rgba(255,255,255,1)] transition-all outline-none focus-visible:ring-4 focus-visible:ring-[#e9ff00] rotate-1 hover:rotate-0">
+                    <span>YL</span>
+                    <span className="text-[#00e936] dark:text-[#e9ff00]">.</span>
+                </Link>
+                <nav className="hidden md:flex items-center gap-2 lg:gap-4 font-bold text-black dark:text-white uppercase tracking-wide text-xs lg:text-sm">
+                    <Link href="#home" className="px-4 py-3 hover:bg-[#e9ff00] hover:text-black border-[3px] border-transparent hover:border-black dark:hover:border-white transition-all hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0_0_rgba(255,255,255,1)] outline-none focus-visible:bg-[#e9ff00]">HOME</Link>
+                    <Link href="#about" className="px-4 py-3 hover:bg-[#e9ff00] hover:text-black border-[3px] border-transparent hover:border-black dark:hover:border-white transition-all hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0_0_rgba(255,255,255,1)] outline-none focus-visible:bg-[#e9ff00]">ABOUT</Link>
+                    <Link href="#skills" className="px-4 py-3 hover:bg-[#e9ff00] hover:text-black border-[3px] border-transparent hover:border-black dark:hover:border-white transition-all hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0_0_rgba(255,255,255,1)] outline-none focus-visible:bg-[#e9ff00]">SKILLS</Link>
+                    <Link href="#projects" className="px-4 py-3 hover:bg-[#e9ff00] hover:text-black border-[3px] border-transparent hover:border-black dark:hover:border-white transition-all hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0_0_rgba(255,255,255,1)] outline-none focus-visible:bg-[#e9ff00]">WORK</Link>
+                    <Link href="#contact" className="px-4 py-3 hover:bg-[#e9ff00] hover:text-black border-[3px] border-transparent hover:border-black dark:hover:border-white transition-all hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0_0_rgba(255,255,255,1)] outline-none focus-visible:bg-[#e9ff00] text-[#00e936] dark:text-[#e9ff00]">CONTACT</Link>
                 </nav>
-
-                {/* Mobile Toggle */}
                 <button
                     onClick={() => setIsOpen(!isOpen)}
-                    className="md:hidden p-2 text-zinc-400 hover:text-white transition-colors"
+                    className="md:hidden p-4 bg-white dark:bg-black text-black dark:text-white border-[3px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:shadow-none hover:translate-y-1 hover:translate-x-1 outline-none"
                     aria-label="Toggle menu"
                 >
-                    {isOpen ? <X size={24} /> : <Menu size={24} />}
+                    {isOpen ? <X size={28} strokeWidth={3} /> : <Menu size={28} strokeWidth={3} />}
                 </button>
             </div>
-
-            {/* Mobile Fullscreen Menu */}
             {isOpen && (
-                <div className="md:hidden fixed inset-0 z-[100] bg-zinc-950 flex flex-col">
-                    {/* Header */}
-                    <div className="flex items-center justify-between px-6 h-20">
-                        <Link href="/" className="text-2xl font-bold tracking-wide text-white">
-                            YL<span className="text-indigo-500">.</span>
-                        </Link>
-                        <button
-                            onClick={() => setIsOpen(false)}
-                            className="p-2 text-zinc-400 hover:text-white transition-colors"
-                            aria-label="Close menu"
-                        >
-                            <X size={24} />
-                        </button>
-                    </div>
-
-                    {/* Nav Links */}
-                    <nav className="flex-1 flex flex-col items-center justify-center gap-2 px-8">
-                        {navLinks.map((link, i) => (
-                            <a
-                                key={link.href}
-                                href={link.href}
-                                onClick={() => setIsOpen(false)}
-                                className="text-2xl font-semibold text-zinc-300 hover:text-white transition-all duration-200 py-4 w-full text-center border-b border-white/5"
-                                style={{ animationDelay: `${i * 50}ms` }}
-                            >
-                                {link.label}
-                            </a>
-                        ))}
-                        <a
-                            href="#contact"
-                            onClick={() => setIsOpen(false)}
-                            className="mt-6 w-full py-4 text-center bg-indigo-600 hover:bg-indigo-500 text-white text-lg font-bold rounded-xl transition-colors shadow-lg shadow-indigo-500/20"
-                        >
-                            Let&apos;s Talk
-                        </a>
-                    </nav>
+                <div className="md:hidden absolute top-full left-0 w-full bg-[#f0f0f0] dark:bg-[#111] border-b-[4px] border-black dark:border-white border-t-[4px] flex flex-col items-center py-8 gap-4 z-[100] shadow-[0px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_12px_0px_0px_rgba(255,255,255,1)] px-6">
+                    <Link onClick={() => setIsOpen(false)} href="#home" className="w-full text-center py-4 bg-white dark:bg-black text-black dark:text-white border-[3px] border-black dark:border-white font-black text-xl uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">HOME</Link>
+                    <Link onClick={() => setIsOpen(false)} href="#about" className="w-full text-center py-4 bg-white dark:bg-black text-black dark:text-white border-[3px] border-black dark:border-white font-black text-xl uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">ABOUT</Link>
+                    <Link onClick={() => setIsOpen(false)} href="#skills" className="w-full text-center py-4 bg-white dark:bg-black text-black dark:text-white border-[3px] border-black dark:border-white font-black text-xl uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">SKILLS</Link>
+                    <Link onClick={() => setIsOpen(false)} href="#projects" className="w-full text-center py-4 bg-white dark:bg-black text-black dark:text-white border-[3px] border-black dark:border-white font-black text-xl uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">WORK</Link>
+                    <Link onClick={() => setIsOpen(false)} href="#contact" className="w-full text-center py-4 bg-[#e9ff00] text-black border-[3px] border-black dark:border-white font-black text-xl uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">CONTACT</Link>
                 </div>
             )}
         </header>

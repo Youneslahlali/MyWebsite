@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
     --font-mono: var(--font-fira-code), ui-monospace, monospace;
@@ -73,100 +75,7 @@ html {
 }
 
 /* Apply theme colors to body */
-html[data-theme="light"] body {
-    background-color: var(--bg-primary) !important;
-    color: var(--text-primary) !important;
-}
-
-/* ──────────────────────────────────────
-   Light Mode Component Overrides
-   ────────────────────────────────────── */
-
-/* Navbar */
-[data-theme="light"] header {
-    background-color: rgba(248, 250, 252, 0.8) !important;
-    backdrop-filter: blur(20px) saturate(1.4);
-}
-
-/* Sections with dark bg */
-[data-theme="light"] section {
-    background-color: transparent;
-}
-
-[data-theme="light"] .bg-zinc-900\/30 {
-    background-color: rgba(241, 245, 249, 0.6) !important;
-}
-
-/* Text colors */
-[data-theme="light"] .text-white {
-    color: #0f172a !important;
-}
-
-[data-theme="light"] .text-zinc-100 {
-    color: #0f172a !important;
-}
-
-[data-theme="light"] .text-zinc-300 {
-    color: #334155 !important;
-}
-
-[data-theme="light"] .text-zinc-400 {
-    color: #475569 !important;
-}
-
-[data-theme="light"] .text-zinc-500 {
-    color: #64748b !important;
-}
-
-[data-theme="light"] .text-zinc-600 {
-    color: #94a3b8 !important;
-}
-
-/* Backgrounds */
-[data-theme="light"] .bg-zinc-950 {
-    background-color: var(--bg-primary) !important;
-}
-
-[data-theme="light"] .bg-zinc-900 {
-    background-color: var(--card-bg) !important;
-}
-
-[data-theme="light"] .bg-white\/5,
-[data-theme="light"] .bg-white\/10 {
-    background-color: rgba(0, 0, 0, 0.04) !important;
-}
-
-/* Borders */
-[data-theme="light"] .border-white\/5,
-[data-theme="light"] .border-white\/10 {
-    border-color: rgba(0, 0, 0, 0.08) !important;
-}
-
-/* Inputs */
-[data-theme="light"] input,
-[data-theme="light"] textarea,
-[data-theme="light"] select {
-    background-color: rgba(0, 0, 0, 0.03) !important;
-    border-color: rgba(0, 0, 0, 0.12) !important;
-    color: #0f172a !important;
-}
-
-/* Code card */
-[data-theme="light"] .font-mono {
-    color: #334155;
-}
-
-/* Liquid orbs — softer in light mode */
-[data-theme="light"] .liquid-orb {
-    opacity: 0.15;
-}
-
-/* Noise overlay — lighter */
-[data-theme="light"] .noise-overlay::after {
-    opacity: 0.008;
-}
-
-/* Selection */
+/* liquid glass and selection */
 ::selection {
     background: var(--color-accent);
     color: white;
@@ -416,6 +325,11 @@ html[data-theme="light"] body {
     50% {
         transform: translateY(-20px);
     }
+}
+
+@keyframes marquee-x {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
 @keyframes blob {

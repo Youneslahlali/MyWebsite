@@ -1,118 +1,49 @@
 "use client";
 
-import { useState } from "react";
-import { Check, ArrowRight, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { ArrowDown } from "lucide-react";
 
 export function Hero() {
-    const [flipped, setFlipped] = useState(false);
-    const [animating, setAnimating] = useState(false);
-
-    const handleFlip = () => {
-        setAnimating(true);
-        setFlipped(!flipped);
-        setTimeout(() => setAnimating(false), 700);
-    };
-
     return (
-        <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-20">
-            {/* Background Blobs */}
-            <div className="absolute top-20 -left-32 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob" />
-            <div className="absolute top-40 -right-32 w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-15 animate-blob animation-delay-2000" />
-            <div className="absolute -bottom-20 left-1/2 w-96 h-96 bg-violet-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-10 animate-blob animation-delay-4000" />
-
-            <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
-                {/* Text */}
-                <div className="space-y-8 text-center lg:text-left animate-fade-in-up">
-                    <span className="inline-flex items-center gap-2 px-4 py-1.5 glass rounded-full text-sm font-medium text-indigo-300 shimmer-border">
-                        <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-                        Hello, I&apos;m Younes Lahlali
-                    </span>
-
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08]">
-                        Creative Developer
-                        <br />
-                        <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                            &amp; UI Enthusiast
-                        </span>
-                    </h1>
-
-                    <p className="text-lg text-zinc-400 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                        Building digital experiences that blend performance with exceptional
-                        design. I transform ideas into pixel-perfect, high-performance
-                        applications.
-                    </p>
-
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
-                        <a
-                            href="#projects"
-                            className="group px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/40 hover:-translate-y-0.5 flex items-center justify-center gap-2"
-                        >
-                            View My Work
-                            <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-                        </a>
-                        <a
-                            href="#contact"
-                            className="px-8 py-3.5 glass glass-hover text-white font-semibold rounded-xl transition-all duration-300 hover:-translate-y-0.5 text-center"
-                        >
-                            Contact Me
-                        </a>
-                    </div>
+        <section id="home" className="relative min-h-[calc(100vh-160px)] flex flex-col items-center justify-center text-center px-4 md:px-6 py-20 bg-white dark:bg-black transition-colors duration-300 overflow-hidden">
+            <div className="absolute inset-0 z-0 opacity-[0.05] dark:opacity-[0.1] pointer-events-none dark:invert" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '32px 32px' }}></div>
+            
+            {/* Memphis Floating Elements */}
+            <div className="absolute top-[15%] left-[10%] animate-[spin_10s_linear_infinite] z-0 hidden md:block pointer-events-none">
+                <svg width="100" height="100" viewBox="0 0 100 100" className="drop-shadow-[6px_6px_0px_rgba(0,0,0,1)] dark:drop-shadow-[6px_6px_0px_rgba(255,255,255,1)]">
+                    <polygon points="50,0 60,40 100,50 60,60 50,100 40,60 0,50 40,40" fill="#00e936" stroke="currentColor" className="text-black dark:text-white" strokeWidth="4" />
+                </svg>
+            </div>
+            
+            <div className="absolute bottom-[20%] right-[10%] animate-[bounce_5s_ease-in-out_infinite] z-0 hidden md:block pointer-events-none">
+                <svg width="80" height="80" viewBox="0 0 100 100" className="drop-shadow-[6px_6px_0px_rgba(0,0,0,1)] dark:drop-shadow-[6px_6px_0px_rgba(255,255,255,1)]">
+                    <circle cx="50" cy="50" r="40" fill="#e9ff00" stroke="currentColor" className="text-black dark:text-white" strokeWidth="4" />
+                </svg>
+            </div>
+            
+            <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center">
+                <div className="inline-block border-[3px] border-black dark:border-white bg-[#e9ff00] dark:bg-[#00e936] px-5 py-2 font-bold uppercase tracking-widest text-sm mb-10 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] -rotate-3 text-black">
+                    AVAILABLE FOR HIRE
                 </div>
 
-                {/* Code Card */}
-                <div className="flex justify-center lg:justify-end animate-fade-in-up animate-delay-200">
-                    <div
-                        className={`relative w-full max-w-[480px] h-[340px] perspective-1000 cursor-pointer group rounded-2xl ${!flipped && !animating ? "shimmer-border" : ""}`}
-                        onClick={handleFlip}
-                    >
-                        <div
-                            className={`relative w-full h-full transition-transform duration-700 preserve-3d ${flipped ? "rotate-y-180" : ""
-                                }`}
-                        >
-                            {/* Front */}
-                            <div className="absolute inset-0 backface-hidden glass rounded-2xl p-6 flex flex-col shadow-2xl shadow-black/40">
-                                <div className="flex gap-2 mb-5">
-                                    <div className="w-3 h-3 rounded-full bg-red-500" />
-                                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                                    <div className="w-3 h-3 rounded-full bg-green-500" />
-                                </div>
-                                <pre className="font-mono text-sm sm:text-base text-zinc-300 leading-relaxed flex-1">
-                                    <code>{`const developer = {
-  name: 'Younes',
-  passion: 'Building awesome apps',
-  skills: ['Frontend', 'Backend', 'Design'],
-  work: function() {
-    return 'High Quality Code';
-  }
-};`}</code>
-                                </pre>
-                                <div className="text-right text-xs text-zinc-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    Click to flip →
-                                </div>
-                            </div>
-
-                            {/* Back */}
-                            <div className="absolute inset-0 backface-hidden rotate-y-180 glass-strong rounded-2xl p-8 flex flex-col items-center justify-center text-center gap-4 shadow-2xl shadow-black/40">
-                                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500/30 to-purple-500/30 flex items-center justify-center ring-1 ring-indigo-500/20">
-                                    <Check className="w-8 h-8 text-indigo-400" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-white">
-                                    Let&apos;s Build Together!
-                                </h3>
-                                <p className="text-zinc-400">
-                                    I&apos;m currently open for new opportunities and collaborations.
-                                </p>
-                                <a
-                                    href="#contact"
-                                    onClick={(e) => e.stopPropagation()}
-                                    className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl font-semibold transition-all shadow-lg shadow-indigo-500/20"
-                                >
-                                    Get In Touch
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <h1 
+                    className="text-[4rem] sm:text-[5.5rem] md:text-[8rem] lg:text-[10rem] font-black tracking-tighter leading-[0.85] text-black dark:text-white mb-8 md:mb-12 uppercase mx-auto select-none"
+                    style={{ fontFamily: "Arial, sans-serif" }}
+                >
+                    CREATIVE<br />
+                    DEVELOPER
+                </h1>
+                
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold mb-12 md:mb-16 max-w-3xl mx-auto text-black dark:text-white tracking-tight leading-snug">
+                    Building digital experiences that blend performance with exceptional design. I transform ideas into pixel-perfect applications.
+                </p>
+                
+                <Link 
+                    href="#projects" 
+                    className="flex items-center gap-4 bg-[#e9ff00] text-black font-black text-xl sm:text-2xl md:text-3xl py-6 px-12 md:py-8 md:px-20 uppercase tracking-tighter transition-all duration-200 select-none border-[4px] border-black dark:border-white shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_rgba(255,255,255,1)] hover:shadow-[14px_14px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[14px_14px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:-translate-x-1 active:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] dark:active:shadow-[0px_0px_0px_0px_rgba(255,255,255,1)] active:translate-y-2 active:translate-x-2 active:bg-[#00e936] dark:active:bg-[#00e936] outline-none focus-visible:ring-4 focus-visible:ring-black dark:focus-visible:ring-white group"
+                >
+                    VIEW MY WORK <ArrowDown size={36} strokeWidth={3} className="group-hover:animate-bounce" />
+                </Link>
             </div>
         </section>
     );

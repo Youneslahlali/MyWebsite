@@ -1,55 +1,48 @@
-import { Briefcase, FolderCheck, Heart, TrendingUp } from "lucide-react";
+import { Briefcase, FolderCheck, Heart } from "lucide-react";
 
 const stats = [
-    { icon: Briefcase, value: "3+", label: "Years Experience", gradient: "from-indigo-500 to-blue-500" },
-    { icon: FolderCheck, value: "50+", label: "Projects Completed", gradient: "from-purple-500 to-indigo-500" },
-    { icon: Heart, value: "100%", label: "Client Satisfaction", gradient: "from-pink-500 to-purple-500" },
+    { icon: Briefcase, value: "3+", label: "YEARS EXPERIENCE" },
+    { icon: FolderCheck, value: "50+", label: "PROJECTS COMPLETED" },
+    { icon: Heart, value: "100%", label: "CLIENT SATISFACTION" },
 ];
 
 export function About() {
     return (
-        <section id="about" className="py-28 relative">
-            <div className="max-w-7xl mx-auto px-6">
-                <div className="text-center mb-16">
-                    <span className="inline-block px-4 py-1.5 glass rounded-full text-sm font-medium text-indigo-300 mb-4">
-                        <TrendingUp className="w-3.5 h-3.5 inline mr-1.5" />
-                        Background
-                    </span>
-                    <h2 className="text-3xl sm:text-4xl font-bold">
-                        About <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Me</span>
+        <section id="about" className="py-28 px-4 md:px-6 bg-[#f0f0f0] dark:bg-[#111] border-b-[4px] border-black dark:border-white relative transition-colors duration-300">
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-24 relative">
+                    <h2 className="text-[3rem] sm:text-[5rem] font-black uppercase tracking-tighter leading-none text-black relative z-10 inline-block bg-[#e9ff00] dark:bg-[#00e936] px-8 py-4 border-[4px] border-black dark:border-white shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_rgba(255,255,255,1)] rotate-2">
+                        ABOUT ME
                     </h2>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                    {/* Text */}
-                    <div className="space-y-6">
-                        <p className="text-zinc-400 leading-relaxed text-lg">
-                            I am a developer who focuses on writing clean, elegant, and
-                            efficient code. I believe that a website should not only look good
-                            but also perform flawlessly.
+                    <div className="space-y-8 bg-white dark:bg-black p-8 md:p-12 border-[4px] border-black dark:border-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_rgba(255,255,255,1)]">
+                        <p className="text-xl md:text-3xl font-bold leading-relaxed tracking-tight text-black dark:text-white border-l-[8px] border-[#00e936] dark:border-[#e9ff00] pl-6 bg-[#00e936]/10 dark:bg-[#e9ff00]/10 px-4 py-4">
+                            I am a developer who focuses on writing clean, elegant, and efficient code. I believe that a website should not only look good but also perform flawlessly.
                         </p>
-                        <p className="text-zinc-400 leading-relaxed text-lg">
-                            With a background in modern web technologies, I love translating
-                            complex requirements into user-friendly interfaces. My journey
-                            involves constant learning and adapting to the ever-evolving tech
-                            landscape.
+                        <p className="text-xl md:text-3xl font-bold leading-relaxed tracking-tight text-black dark:text-white border-l-[8px] border-[#00e936] dark:border-[#e9ff00] pl-6 bg-[#00e936]/10 dark:bg-[#e9ff00]/10 px-4 py-4">
+                            With a background in modern web technologies, I love translating complex requirements into user-friendly interfaces. My journey involves constant learning and adapting to the ever-evolving tech landscape.
                         </p>
                     </div>
 
-                    {/* Stats */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div className="flex flex-col gap-8 w-full">
                         {stats.map((stat) => (
                             <div
                                 key={stat.label}
-                                className="glass glass-hover rounded-2xl p-6 text-center hover:border-indigo-500/30 hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300 hover:-translate-y-1"
+                                className="group cursor-default border-[4px] border-black dark:border-white p-6 md:p-8 flex flex-row items-center justify-between gap-6 bg-white dark:bg-black hover:bg-[#e9ff00] dark:hover:bg-[#e9ff00] transition-all duration-200 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[0px_0px_0px_0px_rgba(255,255,255,1)] hover:translate-y-[8px] hover:translate-x-[8px]"
                             >
-                                <div className={`w-10 h-10 mx-auto mb-4 rounded-xl bg-gradient-to-br ${stat.gradient} p-2.5 shadow-lg`}>
-                                    <stat.icon className="w-full h-full text-white" />
+                                <div className="flex flex-col items-start w-full">
+                                    <div className="text-5xl md:text-6xl lg:text-7xl font-black text-black dark:text-white group-hover:dark:text-black leading-none mb-3">
+                                        {stat.value}
+                                    </div>
+                                    <div className="text-lg md:text-xl font-black uppercase tracking-widest text-[#00e936] dark:text-[#e9ff00] group-hover:text-black group-hover:dark:text-black selection:bg-black selection:text-white">
+                                        {stat.label}
+                                    </div>
                                 </div>
-                                <div className="text-3xl font-bold text-white mb-1">
-                                    {stat.value}
+                                <div className="p-4 md:p-6 border-[4px] border-black dark:border-white bg-white dark:bg-black group-hover:bg-black group-hover:dark:bg-white group-hover:text-white group-hover:dark:text-black transition-colors duration-200 rounded-none shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] group-hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] group-hover:dark:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] group-hover:-rotate-6">
+                                    <stat.icon size={56} strokeWidth={2.5} className="text-black dark:text-white group-hover:text-white group-hover:dark:text-black" />
                                 </div>
-                                <div className="text-sm text-zinc-500">{stat.label}</div>
                             </div>
                         ))}
                     </div>

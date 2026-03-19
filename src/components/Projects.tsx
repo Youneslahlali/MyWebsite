@@ -1,91 +1,78 @@
-import { ExternalLink, Layers } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
 const projects = [
     {
-        title: "Code Generator Suite",
+        title: "CODE GENERATOR SUITE",
         description:
             "A professional tool to generate high-quality QR codes, barcodes, and bulk barcodes. Features live preview, multiple formats, and camera scanning.",
         tech: ["Next.js", "TypeScript", "Tailwind"],
-        color: "indigo",
         link: "/generator",
         isInternal: true,
     },
 ];
 
-const colorMap: Record<string, { bg: string; hoverBg: string; hoverBorder: string; hoverText: string; tag: string; tagText: string; gradient: string }> = {
-    indigo: {
-        bg: "bg-indigo-900/20",
-        hoverBg: "group-hover:bg-indigo-900/30",
-        hoverBorder: "hover:border-indigo-500/50",
-        hoverText: "group-hover:text-indigo-400",
-        tag: "bg-indigo-500/10 border-indigo-500/20",
-        tagText: "text-indigo-300",
-        gradient: "from-indigo-500 to-purple-500",
-    },
-};
-
 export function Projects() {
     return (
-        <section id="projects" className="py-28">
-            <div className="max-w-7xl mx-auto px-6">
-                <div className="text-center mb-16">
-                    <span className="inline-block px-4 py-1.5 glass rounded-full text-sm font-medium text-indigo-300 mb-4">
-                        <Layers className="w-3.5 h-3.5 inline mr-1.5" />
-                        Portfolio
-                    </span>
-                    <h2 className="text-3xl sm:text-4xl font-bold">
-                        Featured <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Projects</span>
+        <section id="projects" className="py-28 px-4 md:px-6 bg-white dark:bg-[#111] border-b-[4px] border-black dark:border-white transition-colors duration-300">
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-20 relative">
+                    <h2 className="text-[3rem] sm:text-[4.5rem] font-black uppercase tracking-tighter leading-none text-black relative z-10 inline-block bg-[#e9ff00] dark:bg-[#00e936] px-6 py-3 border-[4px] border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] -rotate-1">
+                        FEATURED PROJECTS
                     </h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                     {projects.map((project) => {
-                        const colors = colorMap[project.color];
-                        const Wrapper = project.isInternal ? Link : "a";
-                        const wrapperProps = project.isInternal
-                            ? { href: project.link }
-                            : { href: project.link, target: "_blank" as const, rel: "noopener noreferrer" };
-
-                        return (
-                            <div
-                                key={project.title}
-                                className={`group relative glass glass-hover rounded-2xl overflow-hidden transition-all duration-300 ${colors.hoverBorder} hover:-translate-y-1`}
-                            >
-                                {/* Gradient accent bar */}
-                                <div className={`h-1 w-full bg-gradient-to-r ${colors.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
-
-                                <div className="p-6 space-y-4">
-                                    <div className="flex justify-between items-start">
-                                        <h3
-                                            className={`text-xl font-bold text-white transition-colors ${colors.hoverText}`}
-                                        >
+                        const content = (
+                            <>
+                                <div className="absolute top-0 left-0 w-full h-[15px] bg-[#00e936] border-b-[4px] border-black dark:border-white group-hover:bg-[#e9ff00] transition-colors"></div>
+                                
+                                <div className="p-8 pt-12 space-y-6 flex-1 flex flex-col">
+                                    <div className="flex justify-between items-start gap-4 border-b-[4px] border-black dark:border-white pb-4 pointer-events-none">
+                                        <h3 className="text-3xl font-black text-black dark:text-white uppercase tracking-tight leading-none group-hover:underline decoration-4 underline-offset-4">
                                             {project.title}
                                         </h3>
-                                        <Wrapper
-                                            {...wrapperProps}
-                                            className="p-2 glass rounded-full text-zinc-400 hover:text-white transition-all hover:scale-110"
+                                        <div
+                                            className="bg-white dark:bg-black border-[3px] border-black dark:border-white p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] text-black dark:text-white group-hover:bg-black group-hover:dark:bg-white group-hover:text-[#e9ff00] group-hover:dark:text-black transition-colors flex-shrink-0"
+                                            aria-hidden="true"
                                         >
-                                            <ExternalLink size={16} />
-                                        </Wrapper>
+                                            <ExternalLink size={24} strokeWidth={3} />
+                                        </div>
                                     </div>
 
-                                    <p className="text-zinc-400 text-sm leading-relaxed">
+                                    <p className="text-black dark:text-gray-300 text-lg font-bold leading-relaxed flex-1 pointer-events-none">
                                         {project.description}
                                     </p>
 
-                                    <div className="flex gap-2 flex-wrap">
+                                    <div className="flex gap-2 flex-wrap pt-4 pointer-events-none">
                                         {project.tech.map((t) => (
                                             <span
                                                 key={t}
-                                                className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all hover:scale-105 ${colors.tag} ${colors.tagText}`}
+                                                className="px-3 py-1 border-[3px] border-black dark:border-white text-xs font-black uppercase tracking-wide text-black dark:text-white bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
                                             >
                                                 {t}
                                             </span>
                                         ))}
                                     </div>
                                 </div>
-                            </div>
+                            </>
+                        );
+
+                        const baseClasses = "group block border-[4px] border-black dark:border-white bg-[#f0f0f0] dark:bg-[#222] transition-all duration-200 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_rgba(255,255,255,1)] hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] hover:dark:shadow-[0px_0px_0px_0px_rgba(255,255,255,1)] hover:translate-y-3 hover:translate-x-3 relative flex flex-col cursor-pointer outline-none focus-visible:ring-4 focus-visible:ring-black dark:focus-visible:ring-white";
+
+                        if (project.isInternal) {
+                            return (
+                                <Link href={project.link} key={project.title} className={baseClasses}>
+                                    {content}
+                                </Link>
+                            );
+                        }
+
+                        return (
+                            <a href={project.link} key={project.title} target="_blank" rel="noopener noreferrer" className={baseClasses}>
+                                {content}
+                            </a>
                         );
                     })}
                 </div>

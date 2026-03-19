@@ -37,9 +37,9 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="scroll-smooth">
+        <html lang="en" className="scroll-smooth" suppressHydrationWarning>
             <body
-                className={`${outfit.variable} ${firaCode.variable} ${cairo.variable} font-sans antialiased bg-zinc-950 text-zinc-100 noise-overlay`}
+                className={`${outfit.variable} ${firaCode.variable} ${cairo.variable} font-sans antialiased bg-white text-black dark:bg-black dark:text-white transition-colors duration-300 overflow-x-hidden`}
             >
                 <ThemeProvider>
                     <ScrollToTop />

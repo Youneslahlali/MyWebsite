@@ -2,85 +2,53 @@ import { Code2, Server, Wrench } from "lucide-react";
 
 const skillCategories = [
     {
-        title: "Frontend",
+        title: "FRONTEND",
         icon: Code2,
-        color: "indigo",
-        skills: ["HTML5", "CSS3", "JavaScript (ES6+)", "React", "Vue.js", "Tailwind"],
+        skills: ["HTML5", "CSS3", "JavaScript (ES6+)", "React", "Vue.js", "Tailwind", "Next.js"],
     },
     {
-        title: "Backend",
+        title: "BACKEND",
         icon: Server,
-        color: "purple",
         skills: ["Node.js", "Python", "Express", "PostgreSQL", "MongoDB"],
     },
     {
-        title: "Tools & Design",
+        title: "TOOLS",
         icon: Wrench,
-        color: "pink",
-        skills: ["Git", "Figma", "Docker", "VS Code", "Jest"],
+        skills: ["Git", "Figma", "Docker", "VS Code", "Jest", "Vercel"],
     },
 ];
 
-const colorMap: Record<string, { border: string; tag: string; tagText: string; gradient: string; iconBg: string }> = {
-    indigo: {
-        border: "hover:border-indigo-500/30",
-        tag: "bg-indigo-500/10 border-indigo-500/20",
-        tagText: "text-indigo-300",
-        gradient: "from-indigo-500 to-blue-500",
-        iconBg: "bg-indigo-500/10",
-    },
-    purple: {
-        border: "hover:border-purple-500/30",
-        tag: "bg-purple-500/10 border-purple-500/20",
-        tagText: "text-purple-300",
-        gradient: "from-purple-500 to-indigo-500",
-        iconBg: "bg-purple-500/10",
-    },
-    pink: {
-        border: "hover:border-pink-500/30",
-        tag: "bg-pink-500/10 border-pink-500/20",
-        tagText: "text-pink-300",
-        gradient: "from-pink-500 to-purple-500",
-        iconBg: "bg-pink-500/10",
-    },
-};
-
 export function Skills() {
     return (
-        <section id="skills" className="py-28 bg-zinc-900/30">
-            <div className="max-w-7xl mx-auto px-6">
-                <div className="text-center mb-16">
-                    <span className="inline-block px-4 py-1.5 glass rounded-full text-sm font-medium text-indigo-300 mb-4">
-                        <Code2 className="w-3.5 h-3.5 inline mr-1.5" />
-                        What I Work With
-                    </span>
-                    <h2 className="text-3xl sm:text-4xl font-bold">
-                        Technical <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Skills</span>
+        <section id="skills" className="py-28 px-4 md:px-6 bg-[#00e936] dark:bg-[#e9ff00] border-b-[4px] border-black dark:border-white relative overflow-hidden transition-colors duration-300">
+            <div className="max-w-7xl mx-auto relative z-10">
+                <div className="text-center mb-20">
+                    <h2 className="text-[3rem] sm:text-[4.5rem] font-black uppercase tracking-tighter leading-none text-black inline-block bg-white px-6 py-3 border-[4px] border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rotate-1">
+                        TECHNICAL SKILLS
                     </h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14">
                     {skillCategories.map((cat) => {
-                        const colors = colorMap[cat.color];
                         const Icon = cat.icon;
                         return (
                             <div
                                 key={cat.title}
-                                className={`glass glass-hover rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 ${colors.border}`}
+                                className="bg-white dark:bg-black border-[4px] border-black dark:border-white p-8 md:p-10 transition-all duration-200 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_rgba(255,255,255,1)] hover:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] hover:dark:shadow-[16px_16px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-2 hover:-translate-x-2 flex flex-col h-full"
                             >
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${colors.gradient} p-2.5 shadow-lg`}>
-                                        <Icon className="w-full h-full text-white" />
+                                <div className="flex flex-col items-start gap-6 mb-10 border-b-[4px] border-black dark:border-white pb-6">
+                                    <div className="bg-[#e9ff00] dark:bg-[#00e936] p-4 border-[4px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] inline-block">
+                                        <Icon size={48} strokeWidth={2.5} className="text-black" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-white">
+                                    <h3 className="text-3xl md:text-4xl font-black text-black dark:text-white uppercase tracking-tighter leading-none">
                                         {cat.title}
                                     </h3>
                                 </div>
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap gap-4 mt-auto">
                                     {cat.skills.map((skill) => (
                                         <span
                                             key={skill}
-                                            className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all duration-200 hover:scale-105 ${colors.tag} ${colors.tagText}`}
+                                            className="px-5 py-3 border-[3px] border-black dark:border-white text-md font-black uppercase tracking-wider text-black dark:text-white bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] hover:dark:shadow-[0px_0px_0px_0px_rgba(255,255,255,1)] hover:translate-y-[4px] hover:translate-x-[4px] hover:bg-black dark:hover:bg-white hover:text-[#e9ff00] dark:hover:text-black transition-all cursor-default"
                                         >
                                             {skill}
                                         </span>
