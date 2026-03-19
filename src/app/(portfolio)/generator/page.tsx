@@ -86,21 +86,21 @@ function CustomSelect({
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-indigo-500 transition-all hover:bg-white/5"
+                className="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-sm focus:outline-none focus:shadow-[4px_4px_0px_#e9ff00] dark:focus:shadow-[4px_4px_0px_#00e936] transition-all uppercase"
             >
                 <span className="truncate">{selectedOption?.label || "Select..."}</span>
                 <svg
-                    className={`w-4 h-4 text-zinc-500 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                    className={`w-5 h-5 text-black dark:text-white transition-transform ${isOpen ? "rotate-180" : ""}`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                 >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
                 </svg>
             </button>
 
             {isOpen && (
-                <div className="absolute z-50 w-full mt-2 py-1 bg-[#12121e] border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in duration-200">
+                <div className="absolute z-50 w-full mt-2 py-2 bg-white dark:bg-black border-[4px] border-black dark:border-white shadow-[8px_8px_0_0_rgba(0,0,0,1)] dark:shadow-[8px_8px_0_0_rgba(255,255,255,1)] animate-in fade-in zoom-in duration-200">
                     <div className="max-h-60 overflow-y-auto custom-scrollbar">
                         {options.map((opt) => (
                             <button
@@ -109,9 +109,9 @@ function CustomSelect({
                                     onChange(opt.value);
                                     setIsOpen(false);
                                 }}
-                                className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${opt.value === value
-                                    ? "bg-indigo-600 text-white"
-                                    : "text-zinc-400 hover:text-white hover:bg-white/5"
+                                className={`w-full text-left px-5 py-3 text-sm font-bold uppercase transition-colors border-b-[3px] border-black dark:border-white last:border-b-0 ${opt.value === value
+                                    ? "bg-black dark:bg-white text-[#e9ff00] dark:text-black"
+                                    : "text-black dark:text-white hover:bg-[#00e936] hover:text-black dark:hover:bg-[#e9ff00]"
                                     }`}
                             >
                                 {opt.label}
@@ -143,6 +143,7 @@ export default function GeneratorPage() {
     const [scannerActive, setScannerActive] = useState(false);
     const [autoProcess, setAutoProcess] = useState(true);
     const [rescanPreview, setRescanPreview] = useState(false);
+    const [formatDropdownOpen, setFormatDropdownOpen] = useState(false);
 
     // WiFi fields
     const [wifiSSID, setWifiSSID] = useState("");
@@ -218,9 +219,9 @@ export default function GeneratorPage() {
                 }
             });
         } else if (mode === "bulk") {
-            stage.innerHTML = `<div class="text-center text-zinc-500 space-y-4">
-        <div class="text-5xl">📄</div>
-        <p>Enter codes and click Generate PDF</p>
+            stage.innerHTML = `<div class="text-center font-black uppercase text-black dark:text-white space-y-4 flex flex-col items-center p-8 border-[4px] border-black dark:border-white shadow-[8px_8px_0_0_#00e936] dark:shadow-[8px_8px_0_0_#e9ff00]">
+        <div class="text-5xl border-[3px] border-black dark:border-white bg-[#00e936] dark:bg-[#e9ff00] p-4 text-black rotate-12 inline-block">📄</div>
+        <p class="text-xl tracking-widest leading-loose">ENTER CODES<br/>AND CLICK<br/>GENERATE PDF</p>
       </div>`;
         }
     }, [mode, content, size, fgColor, bgColor, eccLevel, barcodeFormat, getQRContent]);
@@ -392,16 +393,16 @@ export default function GeneratorPage() {
         <main className="min-h-screen pt-24 pb-16 px-4 sm:px-6">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="text-center mb-10">
-                    <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-white to-indigo-300 bg-clip-text text-transparent mb-3">
-                        Code Generator Suite
+                <div className="text-center mb-16">
+                    <h1 className="text-4xl sm:text-6xl font-black uppercase text-black tracking-tighter mb-4 inline-block px-8 py-3 bg-[#e9ff00] dark:bg-[#00e936] border-[4px] border-black dark:border-white shadow-[8px_8px_0_0_rgba(0,0,0,1)] dark:shadow-[8px_8px_0_0_rgba(255,255,255,1)] -rotate-1">
+                        CODE GENERATOR
                     </h1>
-                    <p className="text-zinc-400">Create professional QR codes and barcodes instantly.</p>
+                    <p className="text-black dark:text-white font-bold text-lg max-w-2xl mx-auto mt-6">Create professional QR codes and barcodes instantly.</p>
                 </div>
 
                 {/* Tabs */}
-                <div className="flex justify-center mb-10">
-                    <div className="flex gap-1 p-1.5 glass rounded-xl">
+                <div className="flex justify-center mb-16">
+                    <div className="flex flex-wrap justify-center gap-3 p-3 bg-white dark:bg-[#111] border-[4px] border-black dark:border-white shadow-[10px_10px_0_0_rgba(0,0,0,1)] dark:shadow-[10px_10px_0_0_rgba(255,255,255,1)]">
                         {modes.map((m) => (
                             <button
                                 key={m.id}
@@ -409,22 +410,22 @@ export default function GeneratorPage() {
                                     setMode(m.id);
                                     if (m.id === "barcode") setContent("1234567890");
                                 }}
-                                className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-lg text-sm font-semibold transition-all ${mode === m.id
-                                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
-                                    : "text-zinc-400 hover:text-white hover:bg-white/5"
+                                className={`flex items-center gap-2 px-6 py-3 border-[3px] font-black uppercase tracking-widest text-sm transition-all focus:outline-none ${mode === m.id
+                                    ? "bg-black dark:bg-white text-[#00e936] dark:text-black border-black dark:border-white shadow-[4px_4px_0_0_#00e936] dark:shadow-[4px_4px_0_0_#e9ff00] translate-y-1 translate-x-1"
+                                    : "bg-white dark:bg-black text-black dark:text-white border-transparent hover:border-black dark:hover:border-white"
                                     }`}
                             >
-                                <m.icon size={16} />
-                                <span className="hidden sm:inline">{m.label}</span>
+                                <m.icon size={20} strokeWidth={3} />
+                                <span>{m.label}</span>
                             </button>
                         ))}
                     </div>
                 </div>
 
                 {/* Workspace */}
-                <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-12">
                     {/* Config Panel */}
-                    <aside className="glass rounded-2xl p-6 space-y-6 h-fit lg:sticky lg:top-24">
+                    <aside className="bg-white dark:bg-[#111] border-[4px] border-black dark:border-white p-8 space-y-8 h-fit lg:sticky lg:top-24 shadow-[12px_12px_0_0_rgba(0,0,0,1)] dark:shadow-[12px_12px_0_0_rgba(255,255,255,1)]">
                         {/* QR Input Types */}
                         {mode === "qr" && (
                             <div>
@@ -434,9 +435,9 @@ export default function GeneratorPage() {
                                         <button
                                             key={t.id}
                                             onClick={() => { setInputType(t.id); setContent(""); }}
-                                            className={`flex flex-col items-center gap-1 p-2.5 rounded-lg text-xs font-medium transition-all ${inputType === t.id
-                                                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
-                                                : "bg-white/3 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/5"
+                                            className={`flex flex-col items-center gap-1 p-3 border-[3px] text-xs font-black uppercase tracking-widest transition-all ${inputType === t.id
+                                                ? "bg-black dark:bg-white text-[#00e936] dark:text-black border-black dark:border-white shadow-[4px_4px_0_0_#00e936] dark:shadow-[4px_4px_0_0_#e9ff00] translate-y-1 translate-x-1"
+                                                : "bg-white dark:bg-black text-black dark:text-white border-transparent hover:border-black dark:hover:border-white"
                                                 }`}
                                         >
                                             <t.icon size={16} />
@@ -454,8 +455,8 @@ export default function GeneratorPage() {
                                 {/* WiFi */}
                                 {mode === "qr" && inputType === "wifi" ? (
                                     <div className="space-y-2">
-                                        <input value={wifiSSID} onChange={(e) => setWifiSSID(e.target.value)} placeholder="Network Name (SSID)" className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors" />
-                                        <input value={wifiPass} onChange={(e) => setWifiPass(e.target.value)} placeholder="Password" className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors" />
+                                        <input value={wifiSSID} onChange={(e) => setWifiSSID(e.target.value)} placeholder="Network Name (SSID)" className="w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-lg placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:shadow-[4px_4px_0_0_#00e936] dark:focus:shadow-[4px_4px_0_0_#e9ff00] transition-all uppercase" />
+                                        <input value={wifiPass} onChange={(e) => setWifiPass(e.target.value)} placeholder="Password" className="w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-lg placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:shadow-[4px_4px_0_0_#00e936] dark:focus:shadow-[4px_4px_0_0_#e9ff00] transition-all uppercase" />
                                         <CustomSelect
                                             value={wifiEnc}
                                             onChange={setWifiEnc}
@@ -468,23 +469,23 @@ export default function GeneratorPage() {
                                     </div>
                                 ) : mode === "qr" && inputType === "sms" ? (
                                     <div className="space-y-2">
-                                        <input value={smsPhone} onChange={(e) => setSmsPhone(e.target.value)} placeholder="Phone Number" className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors" />
-                                        <textarea value={smsMessage} onChange={(e) => setSmsMessage(e.target.value)} placeholder="Message" rows={3} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors resize-none" />
+                                        <input value={smsPhone} onChange={(e) => setSmsPhone(e.target.value)} placeholder="Phone Number" className="w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-lg placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:shadow-[4px_4px_0_0_#00e936] dark:focus:shadow-[4px_4px_0_0_#e9ff00] transition-all uppercase" />
+                                        <textarea value={smsMessage} onChange={(e) => setSmsMessage(e.target.value)} placeholder="Message" rows={3} className="w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-lg placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:shadow-[4px_4px_0_0_#00e936] dark:focus:shadow-[4px_4px_0_0_#e9ff00] transition-all resize-none uppercase" />
                                     </div>
                                 ) : mode === "qr" && inputType === "vcard" ? (
                                     <div className="space-y-2">
-                                        <input value={vcardName} onChange={(e) => setVcardName(e.target.value)} placeholder="Full Name" className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors" />
-                                        <input value={vcardOrg} onChange={(e) => setVcardOrg(e.target.value)} placeholder="Organization" className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors" />
-                                        <input value={vcardPhone} onChange={(e) => setVcardPhone(e.target.value)} placeholder="Phone" className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors" />
-                                        <input value={vcardEmail} onChange={(e) => setVcardEmail(e.target.value)} placeholder="Email" className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors" />
-                                        <input value={vcardSite} onChange={(e) => setVcardSite(e.target.value)} placeholder="Website" className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors" />
+                                        <input value={vcardName} onChange={(e) => setVcardName(e.target.value)} placeholder="Full Name" className="w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-lg placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:shadow-[4px_4px_0_0_#00e936] dark:focus:shadow-[4px_4px_0_0_#e9ff00] transition-all uppercase" />
+                                        <input value={vcardOrg} onChange={(e) => setVcardOrg(e.target.value)} placeholder="Organization" className="w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-lg placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:shadow-[4px_4px_0_0_#00e936] dark:focus:shadow-[4px_4px_0_0_#e9ff00] transition-all uppercase" />
+                                        <input value={vcardPhone} onChange={(e) => setVcardPhone(e.target.value)} placeholder="Phone" className="w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-lg placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:shadow-[4px_4px_0_0_#00e936] dark:focus:shadow-[4px_4px_0_0_#e9ff00] transition-all uppercase" />
+                                        <input value={vcardEmail} onChange={(e) => setVcardEmail(e.target.value)} placeholder="Email" className="w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-lg placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:shadow-[4px_4px_0_0_#00e936] dark:focus:shadow-[4px_4px_0_0_#e9ff00] transition-all uppercase" />
+                                        <input value={vcardSite} onChange={(e) => setVcardSite(e.target.value)} placeholder="Website" className="w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-lg placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:shadow-[4px_4px_0_0_#00e936] dark:focus:shadow-[4px_4px_0_0_#e9ff00] transition-all uppercase" />
                                     </div>
                                 ) : (
                                     <input
                                         value={content}
                                         onChange={(e) => setContent(e.target.value)}
                                         placeholder={getPlaceholder()}
-                                        className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                                        className="w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-lg placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:shadow-[4px_4px_0_0_#00e936] dark:focus:shadow-[4px_4px_0_0_#e9ff00] transition-all"
                                     />
                                 )}
                             </div>
@@ -499,7 +500,7 @@ export default function GeneratorPage() {
                                     onChange={(e) => setBulkInput(e.target.value)}
                                     placeholder="Enter one code per line..."
                                     rows={6}
-                                    className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors resize-y"
+                                    className="w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-bold text-lg placeholder-black/50 dark:placeholder-white/50 focus:outline-none focus:shadow-[4px_4px_0_0_#00e936] dark:focus:shadow-[4px_4px_0_0_#e9ff00] transition-all resize-y"
                                 />
                             </div>
                         )}
@@ -560,33 +561,33 @@ export default function GeneratorPage() {
 
                         {/* Size Slider */}
                         {mode !== "scan" && (
-                            <div>
-                                <label className="block text-xs font-medium text-zinc-500 uppercase tracking-wider mb-2">Size</label>
-                                <div className="flex items-center gap-4">
+                            <div className="space-y-4">
+                                <label className="block text-sm font-black text-black dark:text-white uppercase tracking-widest">Size</label>
+                                <div className="flex items-center gap-6 p-4 bg-white dark:bg-black border-[3px] border-black dark:border-white shadow-[4px_4px_0_0_#000] dark:shadow-[4px_4px_0_0_#fff]">
                                     <input
                                         type="range"
                                         min={100}
                                         max={400}
                                         value={size}
                                         onChange={(e) => setSize(Number(e.target.value))}
-                                        className="flex-1 h-1.5 bg-white/10 rounded-full appearance-none accent-indigo-500"
+                                        className="flex-1 h-4 border-[3px] border-black dark:border-white appearance-none bg-[#00e936] dark:bg-[#e9ff00] outline-none slider-thumb-brutal cursor-pointer shadow-[2px_2px_0_0_#000] dark:shadow-[2px_2px_0_0_#fff]"
                                     />
-                                    <span className="text-sm text-zinc-400 min-w-[45px] text-right">{size}px</span>
+                                    <span className="text-xl font-black text-black dark:text-white min-w-[70px] text-right">{size}PX</span>
                                 </div>
                             </div>
                         )}
 
                         {/* Colors */}
                         {mode !== "scan" && (
-                            <div className="space-y-3">
-                                <label className="block text-xs font-medium text-zinc-500 uppercase tracking-wider">Colors</label>
-                                <div className="flex items-center gap-3 p-3 bg-black/20 rounded-lg border border-white/5">
-                                    <input type="color" value={fgColor} onChange={(e) => setFgColor(e.target.value)} className="w-8 h-8 rounded cursor-pointer border-0 bg-transparent" />
-                                    <span className="text-sm text-zinc-400">Foreground</span>
+                            <div className="space-y-4">
+                                <label className="block text-sm font-black text-black dark:text-white uppercase tracking-widest">Colors</label>
+                                <div className="flex items-center gap-4 p-3 bg-white dark:bg-black border-[3px] border-black dark:border-white shadow-[4px_4px_0_0_#000] dark:shadow-[4px_4px_0_0_#fff]">
+                                    <input type="color" value={fgColor} onChange={(e) => setFgColor(e.target.value)} className="w-10 h-10 cursor-pointer border-[3px] border-black dark:border-white p-0 bg-transparent" />
+                                    <span className="text-sm font-bold uppercase text-black dark:text-white">Foreground</span>
                                 </div>
-                                <div className="flex items-center gap-3 p-3 bg-black/20 rounded-lg border border-white/5">
-                                    <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="w-8 h-8 rounded cursor-pointer border-0 bg-transparent" />
-                                    <span className="text-sm text-zinc-400">Background</span>
+                                <div className="flex items-center gap-4 p-3 bg-white dark:bg-black border-[3px] border-black dark:border-white shadow-[4px_4px_0_0_#000] dark:shadow-[4px_4px_0_0_#fff]">
+                                    <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="w-10 h-10 cursor-pointer border-[3px] border-black dark:border-white p-0 bg-transparent" />
+                                    <span className="text-sm font-bold uppercase text-black dark:text-white">Background</span>
                                 </div>
                             </div>
                         )}
@@ -595,24 +596,24 @@ export default function GeneratorPage() {
                         {mode !== "scan" && mode !== "rescan" && (
                             <button
                                 onClick={mode === "bulk" ? generateBulkPDF : generate}
-                                className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20"
+                                className="w-full py-4 bg-black hover:bg-white dark:bg-white dark:hover:bg-black text-[#00e936] hover:text-black dark:text-black dark:hover:text-[#e9ff00] border-[4px] border-black dark:border-white font-black text-xl uppercase transition-all shadow-[6px_6px_0_0_#00e936] dark:shadow-[6px_6px_0_0_#e9ff00] hover:shadow-[0px_0px_0px_0px_transparent] flex items-center justify-center gap-3 translate-x-0 translate-y-0 hover:translate-x-1 hover:translate-y-1"
                             >
-                                {mode === "bulk" ? <><FileText size={18} /> Generate PDF</> : <><Wand2 size={18} /> Generate Code</>}
+                                {mode === "bulk" ? <><FileText size={24} strokeWidth={3} /> GENERATE PDF</> : <><Wand2 size={24} strokeWidth={3} /> GENERATE CODE</>}
                             </button>
                         )}
 
                         {mode === "rescan" && (
-                            <div className="space-y-4">
-                                <label className="flex items-center gap-3 p-3 bg-indigo-500/10 rounded-xl border border-indigo-500/20 cursor-pointer group hover:bg-indigo-500/20 transition-all">
+                            <div className="space-y-6">
+                                <label className="flex items-center gap-4 p-4 bg-white dark:bg-black border-[3px] border-black dark:border-white cursor-pointer shadow-[4px_4px_0_0_#00e936] dark:shadow-[4px_4px_0_0_#e9ff00] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group">
                                     <input
                                         type="checkbox"
                                         checked={autoProcess}
                                         onChange={(e) => setAutoProcess(e.target.checked)}
-                                        className="w-4 h-4 rounded accent-indigo-500"
+                                        className="w-5 h-5 border-[3px] border-black dark:border-white appearance-none checked:bg-[#e9ff00] dark:checked:bg-[#00e936] checked:border-black dark:checked:border-white"
                                     />
                                     <div className="flex flex-col">
-                                        <span className="text-sm font-semibold text-white group-hover:text-indigo-300 transition-colors">Clean Digits</span>
-                                        <span className="text-[10px] text-zinc-400">Remove all letters from result</span>
+                                        <span className="text-sm font-black uppercase text-black dark:text-white group-hover:text-[#00e936] dark:group-hover:text-[#e9ff00] transition-colors">Clean Digits</span>
+                                        <span className="text-xs font-bold text-black/60 dark:text-white/60">Remove letters from result</span>
                                     </div>
                                 </label>
                                 {rescanPreview && (
@@ -622,9 +623,9 @@ export default function GeneratorPage() {
                                             setScanResult("");
                                             setScannerActive(false);
                                         }}
-                                        className="w-full py-3 px-4 bg-white/5 border border-white/10 text-white text-sm rounded-xl font-medium hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+                                        className="w-full py-4 bg-black dark:bg-white text-white dark:text-black border-[3px] border-black dark:border-white text-sm font-black uppercase tracking-widest hover:bg-[#e9ff00] dark:hover:bg-[#00e936] hover:text-black dark:hover:text-black transition-all flex items-center justify-center gap-3 shadow-[6px_6px_0_0_rgba(0,0,0,1)] dark:shadow-[6px_6px_0_0_rgba(255,255,255,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
                                     >
-                                        <RefreshCw size={14} /> Scan Another
+                                        <RefreshCw size={18} strokeWidth={3} /> SCAN ANOTHER
                                     </button>
                                 )}
                             </div>
@@ -632,42 +633,41 @@ export default function GeneratorPage() {
                     </aside>
 
                     {/* Preview Panel */}
-                    <div className="glass rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center min-h-[450px] relative overflow-hidden">
-                        {/* Background Glow */}
-                        <div className="absolute w-72 h-72 bg-indigo-600 filter blur-[150px] opacity-15 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+                    <div className="bg-[#f0f0f0] dark:bg-[#222] border-[4px] border-black dark:border-white shadow-[12px_12px_0_0_rgba(0,0,0,1)] dark:shadow-[12px_12px_0_0_rgba(255,255,255,1)] p-8 sm:p-12 flex flex-col items-center justify-center min-h-[450px] relative overflow-hidden">
+                        {/* Background Glow removed for brutalist styling */}
 
                         {mode === "scan" ? (
-                            <div className="z-10 w-full max-w-md space-y-6">
-                                <div ref={scannerRef} id="scanner-reader" className="w-full rounded-xl overflow-hidden" />
+                            <div className="z-10 w-full max-w-md space-y-8">
+                                <div key="scan-reader" ref={scannerRef} id="scanner-reader" className="w-full border-[4px] border-black dark:border-white shadow-[8px_8px_0_0_rgba(0,0,0,1)] dark:shadow-[8px_8px_0_0_rgba(255,255,255,1)] overflow-hidden bg-white dark:bg-black min-h-[250px]" />
                                 {!scannerActive && (
                                     <button
                                         onClick={startScanner}
-                                        className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2"
+                                        className="w-full py-4 bg-black hover:bg-white dark:bg-white dark:hover:bg-black text-[#00e936] hover:text-black dark:text-black dark:hover:text-[#e9ff00] border-[4px] border-black dark:border-white font-black text-xl uppercase transition-all shadow-[6px_6px_0_0_#00e936] dark:shadow-[6px_6px_0_0_#e9ff00] hover:shadow-none translate-y-0 translate-x-0 hover:translate-y-1 hover:translate-x-1 flex items-center justify-center gap-3"
                                     >
-                                        <Camera size={18} /> Start Scanner
+                                        <Camera size={24} strokeWidth={3} /> START SCANNER
                                     </button>
                                 )}
                                 {scanResult && (
-                                    <div className="p-4 bg-black/30 rounded-xl border border-green-500/30">
-                                        <p className="text-green-400 font-mono text-sm break-all">{scanResult}</p>
+                                    <div className="p-6 bg-white dark:bg-black border-[4px] border-black dark:border-white shadow-[6px_6px_0_0_#e9ff00] dark:shadow-[6px_6px_0_0_#00e936]">
+                                        <p className="font-bold text-lg text-black dark:text-white break-all">{scanResult}</p>
                                     </div>
                                 )}
                             </div>
                         ) : mode === "rescan" ? (
                             <div className="z-10 w-full max-w-lg flex flex-col items-center">
                                 {!rescanPreview ? (
-                                    <div className="w-full space-y-6">
-                                        <div className="w-full rounded-2xl overflow-hidden border border-white/10 bg-black/40 aspect-square relative group shadow-2xl">
+                                    <div className="w-full space-y-8">
+                                        <div className="w-full bg-white dark:bg-black border-[4px] border-black dark:border-white shadow-[12px_12px_0_0_rgba(0,0,0,1)] dark:shadow-[12px_12px_0_0_rgba(255,255,255,1)] aspect-square relative group">
                                             {/* Dedicated empty box for the library to mount to */}
-                                            <div ref={scannerRef} id="rescan-reader" className="w-full h-full" />
+                                            <div key="rescan-reader" ref={scannerRef} id="rescan-reader" className="w-full h-full min-h-[300px]" />
                                             
                                             {/* Status Overlay (Outside the scanner div) */}
                                             {!scannerActive && (
-                                                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-zinc-500 bg-zinc-900/50 backdrop-blur-sm">
-                                                    <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
-                                                        <Camera size={24} />
+                                                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-black dark:text-white bg-white/90 dark:bg-black/90">
+                                                    <div className="w-20 h-20 bg-[#00e936] dark:bg-[#e9ff00] border-[4px] border-black dark:border-white shadow-[6px_6px_0_0_rgba(0,0,0,1)] dark:shadow-[6px_6px_0_0_rgba(255,255,255,1)] flex items-center justify-center">
+                                                        <Camera size={32} className="text-black" strokeWidth={3} />
                                                     </div>
-                                                    <p className="text-sm font-medium">Ready to scan numerical barcodes</p>
+                                                    <p className="text-lg font-black uppercase text-center max-w-[200px]">Ready to scan numerical barcodes</p>
                                                 </div>
                                             )}
 
@@ -681,9 +681,9 @@ export default function GeneratorPage() {
                                                                 html5QrCodeRef.current = null;
                                                             });
                                                         }}
-                                                        className="p-2.5 bg-black/60 hover:bg-red-500 text-white rounded-full transition-all backdrop-blur-md border border-white/10 shadow-lg"
+                                                        className="p-3 bg-white dark:bg-black text-black dark:text-white border-[3px] border-black dark:border-white shadow-[4px_4px_0_0_rgba(0,0,0,1)] dark:shadow-[4px_4px_0_0_rgba(255,255,255,1)] hover:bg-[#e9ff00] dark:hover:bg-[#00e936] hover:text-black transition-all hover:translate-y-1 hover:translate-x-1 hover:shadow-none"
                                                     >
-                                                        <X size={20} />
+                                                        <X size={24} strokeWidth={3} />
                                                     </button>
                                                 </div>
                                             )}
@@ -691,40 +691,40 @@ export default function GeneratorPage() {
                                         {!scannerActive && (
                                             <button
                                                 onClick={startScanner}
-                                                className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white text-lg font-bold rounded-2xl transition-all flex items-center justify-center gap-3 shadow-xl shadow-indigo-500/30 active:scale-[0.98]"
+                                                className="w-full py-4 bg-black hover:bg-white dark:bg-white dark:hover:bg-black text-[#00e936] hover:text-black dark:text-black dark:hover:text-[#e9ff00] border-[4px] border-black dark:border-white font-black text-xl uppercase transition-all shadow-[8px_8px_0_0_#00e936] dark:shadow-[8px_8px_0_0_#e9ff00] hover:shadow-none translate-y-0 translate-x-0 hover:translate-y-1 hover:translate-x-1 flex items-center justify-center gap-3"
                                             >
-                                                <Camera size={22} /> Start Utility Scanner
+                                                <Camera size={24} strokeWidth={3} /> START UTILITY SCANNER
                                             </button>
                                         )}
                                     </div>
                                 ) : (
                                     <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                         <div className="flex flex-col items-center gap-6">
-                                            <div className="flex items-center gap-4 w-full">
-                                                <div className="flex-1 p-4 bg-black/40 rounded-2xl border border-white/10 space-y-1">
-                                                    <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Original Scan</span>
-                                                    <p className="text-sm text-zinc-300 font-mono italic break-all line-through opacity-50">{scanResult}</p>
+                                            <div className="flex items-center gap-4 w-full flex-col sm:flex-row">
+                                                <div className="flex-1 p-6 w-full bg-white dark:bg-black border-[4px] border-black dark:border-white shadow-[6px_6px_0_0_rgba(0,0,0,1)] dark:shadow-[6px_6px_0_0_rgba(255,255,255,1)] space-y-2">
+                                                    <span className="text-sm font-black uppercase text-black/50 dark:text-white/50 tracking-widest">Original Scan</span>
+                                                    <p className="text-base text-black dark:text-white font-bold italic line-through break-all opacity-80">{scanResult}</p>
                                                 </div>
-                                                <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/20">
-                                                    <Wand2 size={18} className="text-white" />
+                                                <div className="w-12 h-12 bg-black dark:bg-[#e9ff00] border-[4px] border-black dark:border-white flex items-center justify-center shrink-0 shadow-[4px_4px_0_0_#00e936] dark:shadow-[4px_4px_0_0_#e9ff00] rotate-12">
+                                                    <Wand2 size={24} className="text-[#00e936] dark:text-black" strokeWidth={3} />
                                                 </div>
-                                                <div className="flex-1 p-4 bg-indigo-500/10 rounded-2xl border border-indigo-500/20 space-y-1">
-                                                    <span className="text-[10px] uppercase tracking-widest text-indigo-400 font-bold">Processed Result</span>
-                                                    <p className="text-sm text-white font-mono font-bold break-all">{content}</p>
+                                                <div className="flex-1 p-6 w-full bg-[#e9ff00] dark:bg-[#00e936] border-[4px] border-black dark:border-white shadow-[6px_6px_0_0_rgba(0,0,0,1)] dark:shadow-[6px_6px_0_0_rgba(255,255,255,1)] space-y-2">
+                                                    <span className="text-sm font-black uppercase text-black tracking-widest">Processed Result</span>
+                                                    <p className="text-xl text-black font-black break-all">{content}</p>
                                                 </div>
                                             </div>
 
                                             <div
                                                 ref={previewRef}
-                                                className="bg-white p-8 rounded-2xl shadow-2xl ring-1 ring-white/10 scale-110 sm:scale-125 my-8 transform transition-all"
+                                                className="bg-white p-8 border-[4px] border-black shadow-[12px_12px_0_0_rgba(0,0,0,1)] scale-110 sm:scale-125 my-12 transform transition-all"
                                             />
 
-                                            <div className="flex gap-4 w-full">
-                                                <button onClick={handleCopy} className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white font-semibold hover:bg-white/10 transition-all">
-                                                    {copied ? <><Check size={18} /> Copied</> : <><Copy size={18} /> Copy Code</>}
+                                            <div className="flex flex-col sm:flex-row gap-6 w-full mt-4">
+                                                <button onClick={handleCopy} className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-white dark:bg-black border-[4px] border-black dark:border-white text-black dark:text-white font-black uppercase tracking-widest hover:bg-[#00e936] dark:hover:bg-[#e9ff00] hover:text-black dark:hover:text-black transition-all shadow-[6px_6px_0_0_rgba(0,0,0,1)] dark:shadow-[6px_6px_0_0_rgba(255,255,255,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1">
+                                                    {copied ? <><Check size={24} strokeWidth={3} /> COPIED!</> : <><Copy size={24} strokeWidth={3} /> COPY CODE</>}
                                                 </button>
-                                                <button onClick={handleDownload} className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/20">
-                                                    <Download size={18} /> Download
+                                                <button onClick={handleDownload} className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-black dark:bg-white text-white dark:text-black hover:bg-[#e9ff00] dark:hover:bg-[#00e936] hover:text-black dark:hover:text-black border-[4px] border-black dark:border-white font-black uppercase tracking-widest transition-all shadow-[6px_6px_0_0_rgba(0,0,0,1)] dark:shadow-[6px_6px_0_0_rgba(255,255,255,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1">
+                                                    <Download size={24} strokeWidth={3} /> DOWNLOAD
                                                 </button>
                                             </div>
                                         </div>
@@ -732,37 +732,59 @@ export default function GeneratorPage() {
                                 )}
                             </div>
                         ) : (
-                            <>
+                             <>
                                 {/* Preview Stage */}
                                 <div
+                                    key="preview-stage"
                                     ref={previewRef}
-                                    className="z-10 bg-white p-6 sm:p-8 rounded-xl shadow-2xl shadow-black/30 flex justify-center items-center min-w-[200px] min-h-[150px]"
+                                    className="z-10 bg-white p-6 sm:p-8 border-[4px] border-black shadow-[8px_8px_0_0_rgba(0,0,0,1)] flex justify-center items-center min-w-[200px] min-h-[150px]"
                                 />
 
                                 {/* Label */}
-                                <div className="z-10 mt-6 px-4 py-1.5 bg-black/30 rounded-full text-xs text-zinc-400 font-mono">
+                                <div className="z-10 mt-6 px-6 py-2 bg-white dark:bg-black border-[3px] border-black dark:border-white shadow-[4px_4px_0_0_#00e936] dark:shadow-[4px_4px_0_0_#e9ff00] text-sm font-black text-black dark:text-white uppercase tracking-widest">
                                     Live Preview
                                 </div>
 
                                 {/* Actions */}
-                                <div className="z-10 mt-6 flex flex-col sm:flex-row gap-3">
-                                    <button onClick={handleCopy} className="flex items-center justify-center gap-2 px-5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white font-medium hover:bg-white/10 transition-all text-sm">
-                                        {copied ? <><Check size={16} /> Copied!</> : <><Copy size={16} /> Copy</>}
+                                <div className="z-10 mt-10 flex flex-col sm:flex-row gap-4">
+                                    <button onClick={handleCopy} className="flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white text-black dark:text-white font-black uppercase tracking-widest hover:bg-[#e9ff00] dark:hover:bg-[#00e936] hover:text-black transition-all shadow-[4px_4px_0_0_rgba(0,0,0,1)] dark:shadow-[4px_4px_0_0_rgba(255,255,255,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 text-sm">
+                                        {copied ? <><Check size={20} strokeWidth={3} /> COPIED!</> : <><Copy size={20} strokeWidth={3} /> COPY</>}
                                     </button>
 
-                                    <div className="flex rounded-lg overflow-hidden shadow-lg shadow-indigo-500/20">
-                                        <button onClick={handleDownload} className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors text-sm">
-                                            <Download size={16} /> Download
+                                    <div className="flex border-[3px] border-black dark:border-white shadow-[4px_4px_0_0_rgba(0,0,0,1)] dark:shadow-[4px_4px_0_0_rgba(255,255,255,1)] bg-white dark:bg-black">
+                                        <button onClick={handleDownload} className="flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-[#00e936] dark:text-black hover:bg-[#00e936] hover:text-black dark:hover:bg-[#e9ff00] font-black uppercase transition-colors text-sm border-r-[3px] border-black dark:border-white">
+                                            <Download size={20} strokeWidth={3} /> DOWNLOAD
                                         </button>
-                                        <select
-                                            value={downloadFormat}
-                                            onChange={(e) => setDownloadFormat(e.target.value)}
-                                            className="bg-indigo-700 text-white text-xs font-bold px-4 py-2 border-l border-indigo-500 focus:outline-none cursor-pointer appearance-none"
-                                        >
-                                            <option value="png">PNG</option>
-                                            <option value="jpg">JPG</option>
-                                            <option value="svg">SVG</option>
-                                        </select>
+                                        <div className="relative">
+                                            <button 
+                                                onClick={() => setFormatDropdownOpen(!formatDropdownOpen)}
+                                                className="h-full flex items-center bg-transparent text-black dark:text-white hover:text-black hover:bg-[#e9ff00] dark:hover:bg-[#00e936] text-sm font-black uppercase px-6 py-2 outline-none transition-colors"
+                                                aria-haspopup="listbox"
+                                                aria-expanded={formatDropdownOpen}
+                                                aria-label="Select download format"
+                                            >
+                                                {downloadFormat} 
+                                                <svg className={`ml-2 w-5 h-5 transition-transform ${formatDropdownOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </button>
+                                            {formatDropdownOpen && (
+                                                <div className="absolute bottom-full right-0 mb-3 min-w-[140px] bg-white dark:bg-black border-[4px] border-black dark:border-white shadow-[6px_6px_0_0_#000] dark:shadow-[6px_6px_0_0_#fff] z-50 flex flex-col">
+                                                    {['png', 'jpg', 'svg'].map(fmt => (
+                                                        <button 
+                                                            key={fmt} 
+                                                            onClick={() => {
+                                                                setDownloadFormat(fmt);
+                                                                setFormatDropdownOpen(false);
+                                                            }} 
+                                                            className={`px-5 py-4 text-left font-black uppercase text-base border-b-[4px] border-black dark:border-white last:border-b-0 transition-colors ${downloadFormat === fmt ? 'bg-[#00e936] dark:bg-[#e9ff00] text-black' : 'bg-transparent text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black'}`}
+                                                        >
+                                                            {fmt}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </>

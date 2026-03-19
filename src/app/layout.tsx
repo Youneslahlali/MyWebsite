@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -25,11 +25,42 @@ const cairo = Cairo({
     weight: ["400", "600", "700"],
 });
 
-export const metadata: Metadata = {
-    title: "Younes Lahlali | Creative Developer",
-    description:
-        "Portfolio of Younes Lahlali — a passionate developer building modern, performant web experiences with exceptional design.",
+export const viewport: Viewport = {
+    themeColor: [
+        { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+        { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    ],
+    width: "device-width",
+    initialScale: 1,
 };
+
+export const metadata: Metadata = {
+    title: {
+        default: "Younes Lahlali | Creative Developer",
+        template: "%s | Younes Lahlali"
+    },
+    description: "Portfolio of Younes Lahlali — a passionate developer building modern, performant web experiences with aggressive Neo-Brutalist design.",
+    keywords: ["Younes Lahlali", "Creative Developer", "Frontend Engineer", "Next.js", "React", "Neo-Brutalism", "Portfolio"],
+    authors: [{ name: "Younes Lahlali" }],
+    creator: "Younes Lahlali",
+    openGraph: {
+        type: "website",
+        locale: "en_US",
+        url: "https://youneslahlali.dev",
+        title: "Younes Lahlali | Creative Developer",
+        description: "Portfolio of Younes Lahlali — building modern, performant web experiences.",
+        siteName: "Younes Lahlali Portfolio",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Younes Lahlali | Creative Developer",
+        description: "Portfolio of Younes Lahlali — building modern, performant web experiences.",
+        creator: "@youneslahlali",
+    },
+};
+
+import { CustomCursor } from "@/components/CustomCursor";
+import { MusicPlayer } from "@/components/MusicPlayer";
 
 export default function RootLayout({
     children,
@@ -42,8 +73,10 @@ export default function RootLayout({
                 className={`${outfit.variable} ${firaCode.variable} ${cairo.variable} font-sans antialiased bg-white text-black dark:bg-black dark:text-white transition-colors duration-300 overflow-x-hidden`}
             >
                 <ThemeProvider>
+                    <CustomCursor />
                     <ScrollToTop />
-                    <main className="relative z-10">{children}</main>
+                    <MusicPlayer />
+                    <main className="relative z-10 pb-32">{children}</main>
                     <ThemeToggle />
                 </ThemeProvider>
             </body>

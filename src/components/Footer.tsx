@@ -25,13 +25,13 @@ export function Footer() {
                         MADE WITH{" "}
                         <button
                             onClick={() => setShowList(!showList)}
-                            className="text-black hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-black"
+                            className="text-[#ff0000] hover:text-white hover:scale-110 active:scale-95 transition-all focus:outline-none"
                             title="❤"
                         >
                             <Heart
                                 size={24}
                                 strokeWidth={3}
-                                className="fill-current"
+                                className="fill-current drop-shadow-[2px_2px_0_rgba(0,0,0,1)]"
                             />
                         </button>{" "}
                         BY YOUNES LAHLALI
@@ -49,14 +49,14 @@ export function Footer() {
                     onClick={() => setShowList(false)}
                 >
                     <div
-                        className="bg-white border-[4px] border-black p-8 max-w-xs w-full space-y-4 shadow-[8px_8px_0px_0px_#e9ff00] dark:shadow-[8px_8px_0px_0px_#00e936]"
+                        className="bg-white dark:bg-black border-[4px] border-black dark:border-white p-8 max-w-xs w-full space-y-4 shadow-[8px_8px_0px_0px_#e9ff00] dark:shadow-[8px_8px_0px_0px_#00e936]"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="flex items-center justify-between mb-6 pb-4 border-b-[4px] border-black">
-                            <h3 className="text-black font-black text-2xl uppercase">THE CREW 🤝</h3>
+                        <div className="flex items-center justify-between mb-6 pb-4 border-b-[4px] border-black dark:border-white">
+                            <h3 className="text-black dark:text-white font-black text-2xl uppercase">THE CREW 🤝</h3>
                             <button
                                 onClick={() => setShowList(false)}
-                                className="text-black hover:scale-110 transition-transform"
+                                className="text-black dark:text-white hover:scale-110 transition-transform"
                             >
                                 <X size={28} strokeWidth={3} />
                             </button>
@@ -66,7 +66,7 @@ export function Footer() {
                                 <button
                                     key={person.name}
                                     onClick={() => setSelectedPerson(person.name)}
-                                    className="w-full text-center px-4 py-3 bg-[#e9ff00] dark:bg-[#00e936] hover:bg-black hover:text-[#e9ff00] dark:hover:text-[#00e936] border-[3px] border-black text-black font-black text-xl uppercase transition-colors"
+                                    className="w-full text-center px-4 py-3 bg-[#e9ff00] dark:bg-[#00e936] hover:bg-black dark:hover:bg-white hover:text-[#e9ff00] dark:hover:text-black border-[3px] border-black dark:border-white text-black font-black text-xl uppercase transition-colors"
                                 >
                                     {person.name}
                                 </button>
@@ -86,11 +86,11 @@ export function Footer() {
                     }}
                 >
                     <div
-                        className="bg-white border-[4px] border-black p-6 max-w-md w-full space-y-6 shadow-[8px_8px_0px_0px_#00e936] dark:shadow-[8px_8px_0px_0px_#e9ff00]"
+                        className="bg-white dark:bg-black border-[4px] border-black dark:border-white p-6 max-w-md w-full space-y-6 shadow-[8px_8px_0px_0px_#00e936] dark:shadow-[8px_8px_0px_0px_#e9ff00]"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="flex items-center justify-between border-b-[4px] border-black pb-4">
-                            <h3 className="text-black font-black text-3xl uppercase">
+                        <div className="flex items-center justify-between border-b-[4px] border-black dark:border-white pb-4">
+                            <h3 className="text-black dark:text-white font-black text-3xl uppercase">
                                 {selected.name}
                             </h3>
                             <button
@@ -98,12 +98,12 @@ export function Footer() {
                                     setSelectedPerson(null);
                                     setShowList(false);
                                 }}
-                                className="text-black hover:scale-110 transition-transform"
+                                className="text-black dark:text-white hover:scale-110 transition-transform"
                             >
                                 <X size={32} strokeWidth={3} />
                             </button>
                         </div>
-                        <div className="relative w-full aspect-[3/4] border-[4px] border-black overflow-hidden bg-zinc-200">
+                        <div className="relative w-full aspect-[3/4] border-[4px] border-black dark:border-white overflow-hidden bg-zinc-200 dark:bg-zinc-800">
                             <Image
                                 src={selected.image}
                                 alt={selected.name}
@@ -114,7 +114,7 @@ export function Footer() {
                         </div>
                         <button
                             onClick={() => setSelectedPerson(null)}
-                            className="w-full py-4 text-center bg-black text-white hover:bg-[#e9ff00] dark:hover:bg-[#00e936] hover:text-black border-[4px] border-black font-black text-xl uppercase transition-colors"
+                            className="w-full py-4 text-center bg-black dark:bg-white text-white dark:text-black hover:bg-[#e9ff00] dark:hover:bg-[#00e936] hover:text-black dark:hover:text-black border-[4px] border-black dark:border-white font-black text-xl uppercase transition-colors"
                         >
                             ← BACK TO LIST
                         </button>

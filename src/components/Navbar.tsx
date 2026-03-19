@@ -40,10 +40,12 @@ export function Navbar() {
                     onClick={() => setIsOpen(!isOpen)}
                     className="md:hidden p-4 bg-white dark:bg-black text-black dark:text-white border-[3px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-all hover:shadow-none hover:translate-y-1 hover:translate-x-1 outline-none"
                     aria-label="Toggle menu"
+                    aria-expanded={isOpen}
                 >
                     {isOpen ? <X size={28} strokeWidth={3} /> : <Menu size={28} strokeWidth={3} />}
                 </button>
             </div>
+            {/* Mobile Nav Dropdown */}
             {isOpen && (
                 <div className="md:hidden absolute top-full left-0 w-full bg-[#f0f0f0] dark:bg-[#111] border-b-[4px] border-black dark:border-white border-t-[4px] flex flex-col items-center py-8 gap-4 z-[100] shadow-[0px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_12px_0px_0px_rgba(255,255,255,1)] px-6">
                     <Link onClick={() => setIsOpen(false)} href="#home" className="w-full text-center py-4 bg-white dark:bg-black text-black dark:text-white border-[3px] border-black dark:border-white font-black text-xl uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">HOME</Link>
