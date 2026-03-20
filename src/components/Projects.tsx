@@ -4,6 +4,13 @@ import React from "react";
 
 const projects = [
     {
+        title: "NO INTERNET DINO",
+        description: "A clone of the classic Chrome offline dinosaur game. Built purely with React, HTML5 Canvas, and custom physics loop.",
+        tech: ["Next.js", "Canvas API", "Physics"],
+        link: "/dino",
+        isInternal: true,
+    },
+    {
         title: "CODE GENERATOR SUITE",
         description:
             "A professional tool to generate high-quality QR codes, barcodes, and bulk barcodes. Features live preview, multiple formats, and camera scanning.",
@@ -33,7 +40,7 @@ export function Projects() {
                                     <div className="w-4 h-4 rounded-full border-[3px] border-black dark:border-white bg-[#ffbd2e] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"></div>
                                     <div className="w-4 h-4 rounded-full border-[3px] border-black dark:border-white bg-[#27c93f] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"></div>
                                     <div className="ml-auto w-[60%] h-6 bg-white dark:bg-black border-[3px] border-black dark:border-white text-[10px] sm:text-xs flex items-center justify-center font-bold font-mono text-black dark:text-white truncate px-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
-                                        localhost:3000{project.link}
+                                        9eleven.site{project.link}
                                     </div>
                                 </div>
 
