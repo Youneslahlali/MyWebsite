@@ -76,7 +76,7 @@ export default function RootLayout({
                     <CustomCursor />
                     <ScrollToTop />
                     <MusicPlayer />
-                    <main className="relative z-10 pb-32">{children}</main>
+                    <main className="relative z-10 pb-40">{children}</main>
                     <ThemeToggle />
                 </ThemeProvider>
             </body>
