@@ -1,17 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [showBanner, setShowBanner] = useState(true);
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     return (
-        <header className="w-full relative z-50 bg-white dark:bg-black transition-colors duration-300 selection:bg-[#eaff00] selection:text-black border-b-[4px] border-black dark:border-white">
-            {showBanner && (
-                <div className="w-full bg-[#bcffb1] dark:bg-[#e9ff00] py-2 px-4 flex justify-center items-center text-black text-xs md:text-sm font-bold relative border-b-[4px] border-black dark:border-white">
+        <header className={`w-full sticky top-0 z-50 transition-all duration-300 selection:bg-[#eaff00] selection:text-black ${scrolled ? 'bg-white/80 dark:bg-black/80 backdrop-blur-md border-b-[4px] border-black dark:border-white shadow-[0_4px_30px_rgba(0,0,0,0.1)]' : 'bg-white dark:bg-black border-b-[4px] border-black dark:border-white'}`}>
+            {showBanner && !scrolled && (
+                <div className="w-full bg-[#bcffb1] dark:bg-[#e9ff00] py-2 px-4 flex justify-center items-center text-black text-xs md:text-sm font-bold relative border-b-[4px] border-black dark:border-white transition-all duration-300">
                     <p className="tracking-tight text-center max-w-[90%]">
                         Explore my latest projects and frontend development work <strong><Link href="#projects">HERE.</Link></strong>
                     </p>
@@ -24,8 +33,8 @@ export function Navbar() {
                     </button>
                 </div>
             )}
-            <div className="max-w-7xl mx-auto px-6 h-32 flex items-center justify-between">
-                <Link href="/" className="border-[4px] border-black dark:border-white py-2 px-6 flex items-baseline font-black text-4xl md:text-5xl tracking-tighter text-black dark:text-white select-none w-max shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] bg-white dark:bg-black hover:translate-x-1 hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[0px_0px_0px_0px_rgba(255,255,255,1)] transition-all outline-none focus-visible:ring-4 focus-visible:ring-[#e9ff00] rotate-1 hover:rotate-0">
+            <div className={`max-w-7xl mx-auto px-6 flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-20' : 'h-32'}`}>
+                <Link href="/" className={`border-[4px] border-black dark:border-white py-2 px-6 flex items-baseline font-black tracking-tighter text-black dark:text-white select-none w-max bg-white dark:bg-black hover:translate-x-1 hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[0px_0px_0px_0px_rgba(255,255,255,1)] transition-all outline-none focus-visible:ring-4 focus-visible:ring-[#e9ff00] hover:rotate-0 ${scrolled ? 'text-3xl md:text-4xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] rotate-0' : 'text-4xl md:text-5xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] rotate-1'}`}>
                     <span>YL</span>
                     <span className="text-[#00e936] dark:text-[#e9ff00]">.</span>
                 </Link>
@@ -47,7 +56,7 @@ export function Navbar() {
             </div>
             {/* Mobile Nav Dropdown */}
             {isOpen && (
-                <div className="md:hidden absolute top-full left-0 w-full bg-[#f0f0f0] dark:bg-[#111] border-b-[4px] border-black dark:border-white border-t-[4px] flex flex-col items-center py-8 gap-4 z-[100] shadow-[0px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_12px_0px_0px_rgba(255,255,255,1)] px-6">
+                <div className="md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-black/95 backdrop-blur-xl border-b-[4px] border-black dark:border-white border-t-[4px] flex flex-col items-center py-8 gap-4 z-[100] shadow-[0px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_12px_0px_0px_rgba(255,255,255,1)] px-6">
                     <Link onClick={() => setIsOpen(false)} href="#home" className="w-full text-center py-4 bg-white dark:bg-black text-black dark:text-white border-[3px] border-black dark:border-white font-black text-xl uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">HOME</Link>
                     <Link onClick={() => setIsOpen(false)} href="#about" className="w-full text-center py-4 bg-white dark:bg-black text-black dark:text-white border-[3px] border-black dark:border-white font-black text-xl uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">ABOUT</Link>
                     <Link onClick={() => setIsOpen(false)} href="#skills" className="w-full text-center py-4 bg-white dark:bg-black text-black dark:text-white border-[3px] border-black dark:border-white font-black text-xl uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">SKILLS</Link>

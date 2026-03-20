@@ -207,10 +207,26 @@ export function MusicPlayer() {
             </div>
 
             {/* Track Info */}
+            <style>{`
+                @keyframes eq {
+                    0% { height: 4px; }
+                    50% { height: 14px; }
+                    100% { height: 4px; }
+                }
+            `}</style>
             <div className="flex items-center gap-4 flex-1 min-w-[200px] w-full sm:w-auto">
                 <div className="bg-[#e9ff00] dark:bg-[#00e936] w-14 h-14 border-[3px] border-black flex items-center justify-center font-black text-black text-xl shrink-0 relative overflow-hidden group shadow-[4px_4px_0_0_#000]">
                     <div className={`absolute inset-0 bg-black translate-y-[100%] transition-transform duration-500 ${isPlaying ? 'translate-y-[80%]' : ''} opacity-20`} />
-                    {isPlaying ? <span className="animate-pulse">▶</span> : <span>{(trackIndex + 1).toString().padStart(2, '0')}</span>}
+                    {!isPlaying ? (
+                        <span>{(trackIndex + 1).toString().padStart(2, '0')}</span>
+                    ) : (
+                        <div className="flex items-end gap-[2px] h-4 z-10 bottom-4 relative">
+                            <div className="w-[4px] bg-black" style={{ animation: 'eq 0.7s ease-in-out infinite', animationDelay: '0.1s' }} />
+                            <div className="w-[4px] bg-black" style={{ animation: 'eq 0.5s ease-in-out infinite', animationDelay: '0.3s' }} />
+                            <div className="w-[4px] bg-black" style={{ animation: 'eq 0.9s ease-in-out infinite', animationDelay: '0.0s' }} />
+                            <div className="w-[4px] bg-black" style={{ animation: 'eq 0.6s ease-in-out infinite', animationDelay: '0.2s' }} />
+                        </div>
+                    )}
                 </div>
                 <div className="flex flex-col truncate overflow-hidden whitespace-nowrap">
                     <span className="font-black text-black dark:text-white uppercase truncate tracking-widest text-sm sm:text-base">{trackTitle}</span>
